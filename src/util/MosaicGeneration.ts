@@ -1,4 +1,4 @@
-import {ParameterFileSet} from "../openscad/ParameterSet.js";
+import {ParameterFileSet} from "../openscad/ParameterSet";
 
 export function GenerateMosaic(parameterFileSet: ParameterFileSet) {
   // montage ${imagemagick_debug} -geometry "${image_mosaic_geometry}" -tile "${image_mosaic_tile}" "${jpg_dir}/"*.png "${jpg_dir}/mosaic_${scad_file_name}.jpg"
