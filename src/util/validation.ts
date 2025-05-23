@@ -1,6 +1,6 @@
 import Ajv from "ajv";
-import {ParameterKV} from "../openscad/ParameterSet";
-import {openscadParameterKvSchema} from "../schemas/openscadParameterKvSchema";
+import { ParameterKV } from "../openscad/ParameterSet";
+import { openscadParameterKvSchema } from "../schemas/openscadParameterKvSchema";
 
 const ajv = new Ajv();
 const validateParameterKV = ajv.compile<ParameterKV[]>(
