@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
-    "target": "ES2021",
-    "module": "commonjs",
+    "target": "ES2024",
+    "module": "node16",
+    "lib": ["ES2024", "dom"],
     "outDir": "./dist",
+    "moduleResolution": "node16",
     "rootDir": "./",
     "resolveJsonModule": true,
     "declaration": true,
@@ -10,7 +12,8 @@
     "strict": true,
     "noImplicitAny": false,
     "esModuleInterop": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "isolatedModules": true
   },
   "exclude": ["node_modules", "dist"]
 }

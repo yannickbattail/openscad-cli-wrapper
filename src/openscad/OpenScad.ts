@@ -10,19 +10,19 @@ import {
   ImageOptions,
   OpenScadOptions,
   Option3mf,
-} from "./OpenScadOptions";
-import { ParameterDefinition } from "./ParameterDefinition";
+} from "./OpenScadOptions.js";
+import { ParameterDefinition } from "./ParameterDefinition.js";
 import {
   ParameterFileSet,
   ParameterKV,
   ParameterSet,
   ParameterSetName,
-} from "./ParameterSet";
-import { ModelSummary } from "./OpenScadSummary";
+} from "./ParameterSet.js";
+import { ModelSummary } from "./OpenScadSummary.js";
 import {
   OpenScadOutputWithParameterDefinition,
   OpenScadOutputWithSummary,
-} from "./OpenScadOutput";
+} from "./OpenScadOutput.js";
 
 export class OpenScad {
   constructor(

@@ -1,5 +1,5 @@
-import { ModelSummary } from "./OpenScadSummary";
-import { ParameterDefinition } from "./ParameterDefinition";
+import { ModelSummary } from "./OpenScadSummary.js";
+import { ParameterDefinition } from "./ParameterDefinition.js";
 
 export interface OpenScadOutput {
   output: string;

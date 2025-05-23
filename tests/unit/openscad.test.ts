@@ -1,4 +1,6 @@
-import { execOutput, getOptions, OpenScad } from "../../src/index";
+import { describe, expect, it } from 'vitest';
+
+import { execOutput, getOptions, OpenScad } from "../../src/index.js";
 
 describe("OpenScad", () => {
   it("construct", () => {

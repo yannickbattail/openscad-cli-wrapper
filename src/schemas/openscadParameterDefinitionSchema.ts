@@ -1,5 +1,5 @@
 import { JSONSchemaType } from "ajv";
-import { ParameterDefinition } from "../openscad/ParameterDefinition";
+import { ParameterDefinition } from "../openscad/ParameterDefinition.js";
 
 export const openscadParameterDefinitionSchema: JSONSchemaType<ParameterDefinition> =
   {

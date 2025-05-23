@@ -1,5 +1,5 @@
 import { JSONSchemaType } from "ajv";
-import { ParameterKV } from "../openscad/ParameterSet";
+import { ParameterKV } from "../openscad/ParameterSet.js";
 
 export const openscadParameterKvSchema: JSONSchemaType<ParameterKV[]> = {
   $schema: "http://json-schema.org/draft-07/schema#",

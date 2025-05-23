@@ -1,13 +1,13 @@
-export * from "./openscad/OpenScad";
-export * from "./openscad/OpenScadConfiguration";
-export * from "./openscad/OpenScadOptions";
-export * from "./openscad/OpenScadOutput";
-export * from "./openscad/ParameterSet";
+export * from "./openscad/OpenScad.js";
+export * from "./openscad/OpenScadConfiguration.js";
+export * from "./openscad/OpenScadOptions.js";
+export * from "./openscad/OpenScadOutput.js";
+export * from "./openscad/ParameterSet.js";
 
-export * from "./schemas/openscadParameterDefinitionSchema";
-export * from "./schemas/openscadParameterKvSchema";
+export * from "./schemas/openscadParameterDefinitionSchema.js";
+export * from "./schemas/openscadParameterKvSchema.js";
 
-export * from "./util/execBash";
-export * from "./util/AnimationGeneration";
-export * from "./util/MosaicGeneration";
-export * from "./util/validation";
+export * from "./util/execBash.js";
+export * from "./util/AnimationGeneration.js";
+export * from "./util/MosaicGeneration.js";
+export * from "./util/validation.js";

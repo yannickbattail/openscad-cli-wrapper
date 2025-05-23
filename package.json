@@ -1,7 +1,7 @@
 {
   "name": "openscad-cli-wrapper",
   "description": "wrapper library around openscad",
-  "version": "0.8.1",
+  "version": "0.8.3",
   "author": "XcinnaY",
   "maintainer": "XcinnaY",
   "license": "LGPL-3.0-or-later",
@@ -15,7 +15,7 @@
     "clean": "rm ./*.js ./*/*.js",
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "test": "jest tests/unit --collectCoverage",
+    "test": "vitest run --coverage ./tests/",
     "lint": "eslint --fix './**/*.ts'",
     "format": "prettier -w ."
   },
@@ -24,15 +24,14 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
-    "@types/jest": "^29.5.14",
     "@types/node": "^22.13.9",
+    "@vitest/coverage-v8": "^3.1.4",
     "eslint": "^9.22.0",
     "globals": "^16.1.0",
-    "jest": "^29.7.0",
     "prettier": "^3.5.3",
     "stylelint": "^16.15.0",
-    "ts-jest": "^29.3.4",
     "typescript": "^5.8.2",
-    "typescript-eslint": "^8.26.0"
+    "typescript-eslint": "^8.26.0",
+    "vitest": "^3.1.4"
   }
 }
