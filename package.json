@@ -1,11 +1,16 @@
 {
-  "name": "laser-saber-customiser-server",
-  "description": "",
-  "version": "1.0.0",
-  "author": "",
-  "license": "",
+  "name": "openscad-cli-wrapper",
+  "description": "wrapper library around openscad",
+  "version": "0.8.1",
+  "author": "XcinnaY",
+  "maintainer": "XcinnaY",
+  "license": "LGPL-3.0-or-later",
   "type": "module",
-  "types": "generate_model.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "clean": "rm ./*.js ./*/*.js",
     "build": "tsc",
@@ -14,7 +19,7 @@
     "format": "prettier -w ."
   },
   "dependencies": {
-    "ajv": "^8.17.1",
+    "ajv": "^8.17.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",

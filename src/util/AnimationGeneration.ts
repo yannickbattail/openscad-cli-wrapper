@@ -1,5 +1,5 @@
 import { execOutput } from "./execBash.js";
-import { OpenScadOutputWithSummary } from "../commons/openscad/OpenScadOutput.js";
+import {OpenScadOutputWithSummary} from "../openscad/OpenScadOutput.js";
 
 export function GenerateAnimation(
   output: OpenScadOutputWithSummary,
