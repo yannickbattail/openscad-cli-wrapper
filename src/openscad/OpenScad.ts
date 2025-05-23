@@ -1,3 +1,6 @@
+import * as path from "node:path";
+import fs from "node:fs";
+
 import {
   AnimOptions,
   Export2dFormat,
@@ -7,21 +10,19 @@ import {
   ImageOptions,
   OpenScadOptions,
   Option3mf,
-} from "./OpenScadOptions.js";
-import { ParameterDefinition } from "./ParameterDefinition.js";
-import * as path from "node:path";
-import fs from "node:fs";
+} from "./OpenScadOptions";
+import { ParameterDefinition } from "./ParameterDefinition";
 import {
   ParameterFileSet,
   ParameterKV,
   ParameterSet,
   ParameterSetName,
-} from "./ParameterSet.js";
-import { ModelSummary } from "./OpenScadSummary.js";
+} from "./ParameterSet";
+import { ModelSummary } from "./OpenScadSummary";
 import {
   OpenScadOutputWithParameterDefinition,
   OpenScadOutputWithSummary,
-} from "./OpenScadOutput.js";
+} from "./OpenScadOutput";
 
 export class OpenScad {
   constructor(

@@ -1,21 +1,16 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "baseUrl": "./",
-    "target": "ES2024",
-    "module": "node16",
-    "lib": ["ES2024", "dom"],
+    "target": "ES2021",
+    "module": "commonjs",
     "outDir": "./dist",
-    "moduleResolution": "node16",
     "rootDir": "./",
+    "resolveJsonModule": true,
     "declaration": true,
     "experimentalDecorators": true,
     "strict": true,
-    "strictNullChecks": true,
     "noImplicitAny": false,
     "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "forceConsistentCasingInFileNames": true
+    "sourceMap": true
   },
   "exclude": ["node_modules", "dist"]
 }
