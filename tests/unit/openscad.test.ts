@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from "vitest";
 
 import { execOutput, getOptions, OpenScad } from "../../src/index.js";
 
