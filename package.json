@@ -1,7 +1,7 @@
 {
   "name": "openscad-cli-wrapper",
   "description": "wrapper library around openscad",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "author": "XcinnaY",
   "maintainer": "XcinnaY",
   "license": "LGPL-3.0-or-later",
@@ -12,7 +12,6 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "clean": "rm ./*.js ./*/*.js",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "test": "vitest run --coverage ./tests/",
