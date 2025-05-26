@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { execOutput, getOptions, OpenScad } from "../../src/index.js";
+import { createFctExecCommand, getOptions, OpenScad } from "../../src/index.js";
+
+const execOutput = createFctExecCommand(true, false);
 
 describe("OpenScad", () => {
   it("construct", () => {
