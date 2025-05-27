@@ -1,5 +1,6 @@
 import * as path from "node:path";
 import fs from "node:fs";
+import { customAlphabet } from "nanoid";
 
 import {
   AnimOptions,
@@ -24,6 +25,8 @@ export class OpenScad {
     private options: OpenScadOptions,
     private exec: Executor,
   ) {}
+
+  nanoid = customAlphabet("1234567890abcdef", 10);
 
   public async getParameterDefinition(): Promise<OpenScadOutputWithParameterDefinition> {
     const outFile = this.getFileByFormat(ExportTextFormat.param, "");
@@ -125,14 +128,14 @@ export class OpenScad {
     if ("parameterFile" in params) {
       return params;
     } else if ("parameterSet" in params) {
-      const file = this.getFileByFormat(ExportTextFormat.paramSet, "paramSet");
+      const file = this.getFileByFormat(ExportTextFormat.paramSet, params.parameterName + "_" + this.nanoid());
       fs.writeFileSync(file, JSON.stringify(params.parameterSet));
       return {
         parameterFile: file,
         parameterName: params.parameterName,
       };
     } else {
-      const file = this.getFileByFormat(ExportTextFormat.paramSet, "model");
+      const file = this.getFileByFormat(ExportTextFormat.paramSet, this.nanoid());
       fs.writeFileSync(file, JSON.stringify(ParameterSet.toParameterSet(params)));
       return {
         parameterFile: file,
