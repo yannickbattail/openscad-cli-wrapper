@@ -49,12 +49,6 @@ export interface ParameterBoolean extends ParameterBase {
 }
 
 export interface ParameterDefinition {
-  parameters: (
-    | ParameterNumber
-    | ParameterNumberOption
-    | ParameterString
-    | ParameterStringOption
-    | ParameterBoolean
-  )[];
+  parameters: (ParameterNumber | ParameterNumberOption | ParameterString | ParameterStringOption | ParameterBoolean)[];
   title: string;
 }

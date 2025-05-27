@@ -45,9 +45,7 @@ export class OpenScadOptions {
   /**
    * enable experimental features
    */
-  public experimentalFeatures: ExperimentalFeatures = new ExperimentalFeatures(
-    {},
-  );
+  public experimentalFeatures: ExperimentalFeatures = new ExperimentalFeatures({});
   /**
    * quiet mode (don't print anything *except* errors)
    */
@@ -179,9 +177,7 @@ export class ImageOptions {
 
   public getOptions() {
     let opt = " --export-format png";
-    opt += this.imgsize
-      ? ` --imgsize ${this.imgsize.width},${this.imgsize.height}`
-      : "";
+    opt += this.imgsize ? ` --imgsize ${this.imgsize.width},${this.imgsize.height}` : "";
     if (this.camera) {
       if ("translate" in this.camera) {
         opt += ` --camera ${this.camera.translate?.x},${this.camera.translate?.y},${this.camera.translate?.z},${this.camera.rotate?.x},${this.camera.rotate?.y},${this.camera.rotate?.z},${this.camera.dist}`;
@@ -278,10 +274,7 @@ export class Option3mf {
 
   public getOptions() {
     return Object.entries(this)
-      .map(
-        ([key, value]) =>
-          `-O 'export-3mf/${key.replaceAll("_", "-")}=${value.replaceAll("'", "\\'")}'`,
-      )
+      .map(([key, value]) => `-O 'export-3mf/${key.replaceAll("_", "-")}=${value.replaceAll("'", "\\'")}'`)
       .join(" ");
   }
 }

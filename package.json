@@ -1,7 +1,7 @@
 {
   "name": "openscad-cli-wrapper",
   "description": "wrapper library around openscad",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "XcinnaY",
   "maintainer": "XcinnaY",
   "license": "LGPL-3.0-or-later",
@@ -16,7 +16,8 @@
     "build:watch": "tsc --watch",
     "test": "vitest run --coverage ./tests/",
     "lint": "eslint --fix './**/*.ts'",
-    "format": "prettier -w ."
+    "format": "prettier -w .",
+    "check": "npm i && npm run build && npm run lint && npm run format && npm run test"
   },
   "dependencies": {
     "ajv": "^8.17.1"

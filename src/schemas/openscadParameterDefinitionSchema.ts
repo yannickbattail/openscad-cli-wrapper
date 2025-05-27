@@ -1,142 +1,141 @@
 import { JSONSchemaType } from "ajv";
 import { ParameterDefinition } from "../openscad/ParameterDefinition.js";
 
-export const openscadParameterDefinitionSchema: JSONSchemaType<ParameterDefinition> =
-  {
-    anyOf: [],
-    oneOf: [],
-    $schema: "http://json-schema.org/draft-07/schema#",
-    title: "ParameterList",
-    type: "object",
-    properties: {
-      parameters: {
-        type: "array",
-        items: {
-          oneOf: [
-            {
-              type: "object",
-              properties: {
-                name: {
-                  type: "string",
-                },
-                caption: {
-                  type: "string",
-                },
-                group: {
-                  type: "string",
-                },
-                type: {
-                  type: "string",
-                  enum: ["number"],
-                },
-                initial: {
-                  oneOf: [
-                    {
+export const openscadParameterDefinitionSchema: JSONSchemaType<ParameterDefinition> = {
+  anyOf: [],
+  oneOf: [],
+  $schema: "http://json-schema.org/draft-07/schema#",
+  title: "ParameterList",
+  type: "object",
+  properties: {
+    parameters: {
+      type: "array",
+      items: {
+        oneOf: [
+          {
+            type: "object",
+            properties: {
+              name: {
+                type: "string",
+              },
+              caption: {
+                type: "string",
+              },
+              group: {
+                type: "string",
+              },
+              type: {
+                type: "string",
+                enum: ["number"],
+              },
+              initial: {
+                oneOf: [
+                  {
+                    type: "number",
+                  },
+                  {
+                    type: "array",
+                    items: {
                       type: "number",
                     },
-                    {
-                      type: "array",
-                      items: {
-                        type: "number",
-                      },
-                    },
-                  ],
-                },
-                options: {
-                  type: "array",
-                  items: {
-                    type: "object",
-                    properties: {
-                      name: {
-                        type: "string",
-                      },
-                      value: {
-                        type: "number",
-                      },
-                    },
-                    required: ["name", "value"],
                   },
-                },
-                max: {
-                  type: "number",
-                },
-                min: {
-                  type: "number",
-                },
-                step: {
-                  type: "number",
-                },
+                ],
               },
-              required: ["name", "type", "initial"],
-            },
-            {
-              type: "object",
-              properties: {
-                name: {
-                  type: "string",
-                },
-                caption: {
-                  type: "string",
-                },
-                group: {
-                  type: "string",
-                },
-                type: {
-                  type: "string",
-                  enum: ["string"],
-                },
-                initial: {
-                  type: "string",
-                },
-                options: {
-                  type: "array",
-                  items: {
-                    type: "object",
-                    properties: {
-                      name: {
-                        type: "string",
-                      },
-                      value: {
-                        type: "string",
-                      },
+              options: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    name: {
+                      type: "string",
                     },
-                    required: ["name", "value"],
+                    value: {
+                      type: "number",
+                    },
                   },
-                },
-                maxLength: {
-                  type: "number",
+                  required: ["name", "value"],
                 },
               },
-              required: ["name", "type", "initial"],
+              max: {
+                type: "number",
+              },
+              min: {
+                type: "number",
+              },
+              step: {
+                type: "number",
+              },
             },
-            {
-              type: "object",
-              properties: {
-                name: {
-                  type: "string",
-                },
-                caption: {
-                  type: "string",
-                },
-                group: {
-                  type: "string",
-                },
-                type: {
-                  type: "string",
-                  enum: ["boolean"],
-                },
-                initial: {
-                  type: "boolean",
+            required: ["name", "type", "initial"],
+          },
+          {
+            type: "object",
+            properties: {
+              name: {
+                type: "string",
+              },
+              caption: {
+                type: "string",
+              },
+              group: {
+                type: "string",
+              },
+              type: {
+                type: "string",
+                enum: ["string"],
+              },
+              initial: {
+                type: "string",
+              },
+              options: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    name: {
+                      type: "string",
+                    },
+                    value: {
+                      type: "string",
+                    },
+                  },
+                  required: ["name", "value"],
                 },
               },
-              required: ["name", "type", "initial"],
+              maxLength: {
+                type: "number",
+              },
             },
-          ],
-        },
-      },
-      title: {
-        type: "string",
+            required: ["name", "type", "initial"],
+          },
+          {
+            type: "object",
+            properties: {
+              name: {
+                type: "string",
+              },
+              caption: {
+                type: "string",
+              },
+              group: {
+                type: "string",
+              },
+              type: {
+                type: "string",
+                enum: ["boolean"],
+              },
+              initial: {
+                type: "boolean",
+              },
+            },
+            required: ["name", "type", "initial"],
+          },
+        ],
       },
     },
-    required: ["parameters", "title"],
-  };
+    title: {
+      type: "string",
+    },
+  },
+  required: ["parameters", "title"],
+};

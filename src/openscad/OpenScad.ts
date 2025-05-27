@@ -12,23 +12,17 @@ import {
   Option3mf,
 } from "./OpenScadOptions.js";
 import { ParameterDefinition } from "./ParameterDefinition.js";
-import {
-  ParameterFileSet,
-  ParameterKV,
-  ParameterSet,
-  ParameterSetName,
-} from "./ParameterSet.js";
+import { ParameterFileSet, ParameterKV, ParameterSet, ParameterSetName } from "./ParameterSet.js";
 import { ModelSummary } from "./OpenScadSummary.js";
-import {
-  OpenScadOutputWithParameterDefinition,
-  OpenScadOutputWithSummary,
-} from "./OpenScadOutput.js";
+import { OpenScadOutputWithParameterDefinition, OpenScadOutputWithSummary } from "./OpenScadOutput.js";
+
+export type Executor = (cmd: string) => Promise<string>;
 
 export class OpenScad {
   constructor(
     private filePath: string,
     private options: OpenScadOptions,
-    private exec: (cmd: string) => Promise<string>,
+    private exec: Executor,
   ) {}
 
   public async getParameterDefinition(): Promise<OpenScadOutputWithParameterDefinition> {
@@ -36,9 +30,7 @@ export class OpenScad {
     const out = await this.exec(
       `${this.options.openScadExecutable} ${this.options.getOptions()} --export-format ${ExportTextFormat.param} -o ${outFile} ${this.filePath}`,
     );
-    const paramDef: ParameterDefinition = JSON.parse(
-      fs.readFileSync(outFile, "utf8"),
-    ) as ParameterDefinition;
+    const paramDef: ParameterDefinition = JSON.parse(fs.readFileSync(outFile, "utf8")) as ParameterDefinition;
     return {
       output: out,
       modelFile: this.filePath,
@@ -57,9 +49,7 @@ export class OpenScad {
     const out = await this.exec(
       `${this.options.openScadExecutable} ${this.options.getOptions()} ${imageOptions.getOptions()} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} -o ${outFile} ${this.filePath}`,
     );
-    const summary = JSON.parse(
-      fs.readFileSync(summaryFile, "utf8"),
-    ) as ModelSummary;
+    const summary = JSON.parse(fs.readFileSync(summaryFile, "utf8")) as ModelSummary;
     return {
       output: out,
       modelFile: this.filePath,
@@ -73,15 +63,13 @@ export class OpenScad {
     animOptions: AnimOptions,
   ): Promise<OpenScadOutputWithSummary> {
     const paramSet = this.toParameterFile(params);
-    const outFile = this.getFileByFormat(Export2dFormat.png);
+    const outFile = this.getFileByFormat(Export2dFormat.png, true);
     const outFilePattern = outFile.replace(".png", "*.png");
     const summaryFile = this.getFileByFormat(ExportTextFormat.summary);
     const out = await this.exec(
       `${this.options.openScadExecutable} ${this.options.getOptions()} ${animOptions.getOptions()} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} -o ${outFile} ${this.filePath}`,
     );
-    const summary = JSON.parse(
-      fs.readFileSync(summaryFile, "utf8"),
-    ) as ModelSummary;
+    const summary = JSON.parse(fs.readFileSync(summaryFile, "utf8")) as ModelSummary;
     return {
       output: out,
       modelFile: this.filePath,
@@ -101,9 +89,7 @@ export class OpenScad {
     const out = await this.exec(
       `${this.options.openScadExecutable} ${this.options.getOptions()} ${option3mf?.getOptions()} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} --export-format ${format} -o ${outFile} ${this.filePath}`,
     );
-    const summary = JSON.parse(
-      fs.readFileSync(summaryFile, "utf8"),
-    ) as ModelSummary;
+    const summary = JSON.parse(fs.readFileSync(summaryFile, "utf8")) as ModelSummary;
     return {
       output: out,
       modelFile: this.filePath,
@@ -128,16 +114,14 @@ export class OpenScad {
     }
   }
 
-  private getFileByFormat(format: ExportFormat): string {
+  private getFileByFormat(format: ExportFormat, forAnim: boolean = false): string {
     return path.join(
       this.options.outputDir,
-      `${path.parse(this.filePath).name}${this.options.suffix ? "_" + this.options.suffix : ""}.${this.getFileFormatExtension(format)}`,
+      `${path.parse(this.filePath).name}${this.options.suffix ? "_" + this.options.suffix : ""}${forAnim ? "_animImg" : ""}.${this.getFileFormatExtension(format)}`,
     );
   }
 
-  private toParameterFile(
-    params: ParameterFileSet | ParameterSetName | ParameterKV[],
-  ): ParameterFileSet {
+  private toParameterFile(params: ParameterFileSet | ParameterSetName | ParameterKV[]): ParameterFileSet {
     if ("parameterFile" in params) {
       return params;
     } else if ("parameterSet" in params) {
@@ -149,10 +133,7 @@ export class OpenScad {
       };
     } else {
       const file = this.getFileByFormat(ExportTextFormat.paramSet);
-      fs.writeFileSync(
-        file,
-        JSON.stringify(ParameterSet.toParameterSet(params)),
-      );
+      fs.writeFileSync(file, JSON.stringify(ParameterSet.toParameterSet(params)));
       return {
         parameterFile: file,
         parameterName: "model",

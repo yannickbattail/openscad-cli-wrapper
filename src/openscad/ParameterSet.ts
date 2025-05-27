@@ -8,10 +8,7 @@ export class ParameterSet {
     }
   }
 
-  public static toParameterSet(
-    paramKV: ParameterKV[],
-    name: string = "model",
-  ): ParameterSet {
+  public static toParameterSet(paramKV: ParameterKV[], name: string = "model"): ParameterSet {
     const parameterSet = new ParameterSet();
     parameterSet.add(name, paramKV);
     return parameterSet;

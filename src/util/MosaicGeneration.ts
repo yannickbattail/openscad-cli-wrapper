@@ -1,9 +1,11 @@
 import { ParameterFileSet } from "../openscad/ParameterSet.js";
 import { OpenScadOutputWithSummary } from "../openscad/OpenScadOutput.js";
+import { Executor } from "../openscad/OpenScad.js";
 
 export function GenerateMosaic(
   parameterFileSet: ParameterFileSet,
-  execCmd: (cmd: string) => string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  execCmd: Executor,
 ): OpenScadOutputWithSummary {
   // montage ${imagemagick_debug} -geometry "${image_mosaic_geometry}" -tile "${image_mosaic_tile}" "${jpg_dir}/"*.png "${jpg_dir}/mosaic_${scad_file_name}.jpg"
   // let output = execOutput(

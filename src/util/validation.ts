@@ -3,9 +3,7 @@ import { ParameterKV } from "../openscad/ParameterSet.js";
 import { openscadParameterKvSchema } from "../schemas/openscadParameterKvSchema.js";
 
 const ajv = new Ajv.default();
-const validateParameterKV = ajv.compile<ParameterKV[]>(
-  openscadParameterKvSchema,
-);
+const validateParameterKV = ajv.compile<ParameterKV[]>(openscadParameterKvSchema);
 // const validateParameterList = ajv.compile<ParameterDefinition>(
 //   openscadParameterDefinitionSchema,
 // );
