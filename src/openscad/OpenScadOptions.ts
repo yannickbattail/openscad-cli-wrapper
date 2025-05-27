@@ -35,10 +35,6 @@ export class OpenScadOptions {
    */
   public outputDir: string = "./";
   /**
-   * output directory for generated files
-   */
-  public suffix: string | null = null;
-  /**
    * 3D rendering backend to use: 'CGAL' (old/slow) or 'Manifold' (new/fast)
    */
   public backend: "CGAL" | "Manifold" = "Manifold";

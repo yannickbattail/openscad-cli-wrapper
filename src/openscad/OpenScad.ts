@@ -26,7 +26,7 @@ export class OpenScad {
   ) {}
 
   public async getParameterDefinition(): Promise<OpenScadOutputWithParameterDefinition> {
-    const outFile = this.getFileByFormat(ExportTextFormat.param);
+    const outFile = this.getFileByFormat(ExportTextFormat.param, "");
     const out = await this.exec(
       `${this.options.openScadExecutable} ${this.options.getOptions()} --export-format ${ExportTextFormat.param} -o ${outFile} ${this.filePath}`,
     );
@@ -44,8 +44,8 @@ export class OpenScad {
     imageOptions: ImageOptions,
   ): Promise<OpenScadOutputWithSummary> {
     const paramSet = this.toParameterFile(params);
-    const outFile = this.getFileByFormat(Export2dFormat.png);
-    const summaryFile = this.getFileByFormat(ExportTextFormat.summary);
+    const outFile = this.getFileByFormat(Export2dFormat.png, paramSet.parameterName);
+    const summaryFile = this.getFileByFormat(ExportTextFormat.summary, paramSet.parameterName);
     const out = await this.exec(
       `${this.options.openScadExecutable} ${this.options.getOptions()} ${imageOptions.getOptions()} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} -o ${outFile} ${this.filePath}`,
     );
@@ -63,9 +63,9 @@ export class OpenScad {
     animOptions: AnimOptions,
   ): Promise<OpenScadOutputWithSummary> {
     const paramSet = this.toParameterFile(params);
-    const outFile = this.getFileByFormat(Export2dFormat.png, true);
+    const outFile = this.getFileByFormat(Export2dFormat.png, paramSet.parameterName, true);
     const outFilePattern = outFile.replace(".png", "*.png");
-    const summaryFile = this.getFileByFormat(ExportTextFormat.summary);
+    const summaryFile = this.getFileByFormat(ExportTextFormat.summary, paramSet.parameterName);
     const out = await this.exec(
       `${this.options.openScadExecutable} ${this.options.getOptions()} ${animOptions.getOptions()} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} -o ${outFile} ${this.filePath}`,
     );
@@ -84,8 +84,8 @@ export class OpenScad {
     option3mf: Option3mf | null,
   ): Promise<OpenScadOutputWithSummary> {
     const paramSet = this.toParameterFile(params);
-    const outFile = this.getFileByFormat(format);
-    const summaryFile = this.getFileByFormat(ExportTextFormat.summary);
+    const outFile = this.getFileByFormat(format, paramSet.parameterName);
+    const summaryFile = this.getFileByFormat(ExportTextFormat.summary, paramSet.parameterName);
     const out = await this.exec(
       `${this.options.openScadExecutable} ${this.options.getOptions()} ${option3mf?.getOptions()} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} --export-format ${format} -o ${outFile} ${this.filePath}`,
     );
@@ -114,10 +114,10 @@ export class OpenScad {
     }
   }
 
-  private getFileByFormat(format: ExportFormat, forAnim: boolean = false): string {
+  private getFileByFormat(format: ExportFormat, suffix: string, forAnim: boolean = false): string {
     return path.join(
       this.options.outputDir,
-      `${path.parse(this.filePath).name}${this.options.suffix ? "_" + this.options.suffix : ""}${forAnim ? "_animImg" : ""}.${this.getFileFormatExtension(format)}`,
+      `${path.parse(this.filePath).name}${suffix ? "_" + suffix : ""}${forAnim ? "_animImg" : ""}.${this.getFileFormatExtension(format)}`,
     );
   }
 
@@ -125,14 +125,14 @@ export class OpenScad {
     if ("parameterFile" in params) {
       return params;
     } else if ("parameterSet" in params) {
-      const file = this.getFileByFormat(ExportTextFormat.paramSet);
+      const file = this.getFileByFormat(ExportTextFormat.paramSet, "paramSet");
       fs.writeFileSync(file, JSON.stringify(params.parameterSet));
       return {
         parameterFile: file,
         parameterName: params.parameterName,
       };
     } else {
-      const file = this.getFileByFormat(ExportTextFormat.paramSet);
+      const file = this.getFileByFormat(ExportTextFormat.paramSet, "model");
       fs.writeFileSync(file, JSON.stringify(ParameterSet.toParameterSet(params)));
       return {
         parameterFile: file,
