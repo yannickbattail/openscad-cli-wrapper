@@ -143,4 +143,17 @@ export class OpenScad {
       };
     }
   }
+
+  private cleanParameterFile(
+    paramsOriginal: ParameterFileSet | ParameterSetName | ParameterKV[],
+    paramsNew: ParameterFileSet,
+  ): void {
+    if ("parameterFile" in paramsOriginal) {
+      return;
+    } else if ("parameterSet" in paramsOriginal) {
+      fs.rmSync(paramsNew.parameterFile);
+    } else {
+      fs.rmSync(paramsNew.parameterFile);
+    }
+  }
 }
