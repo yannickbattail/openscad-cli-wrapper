@@ -63,6 +63,5 @@ export const option3mf = new Option3mf({
 export function getOptions(): OpenScadOptions {
   return new OpenScadOptions({
     ...scadOptions,
-    randomOutput: "" + new Date().getTime(),
   });
 }
