@@ -1,24 +1,4 @@
-export class ExperimentalFeatures {
-  public roof: boolean = true;
-  public input_driver_dbus: boolean = false;
-  public lazy_union: boolean = true;
-  public vertex_object_renderers_indexing: boolean = true;
-  public textmetrics: boolean = true;
-  public import_function: boolean = true;
-  public predictible_output: boolean = true;
-  public python_engine: boolean = false;
-
-  constructor(cfg: object) {
-    Object.assign(this, cfg);
-  }
-
-  public getExperimentalFeatures() {
-    return Object.entries(this)
-      .filter(([, value]) => value)
-      .map(([key]) => ` --enable ${key.replaceAll("_", "-")}`)
-      .join(" ");
-  }
-}
+import { RecursivePartial } from "../util/RecursivePartial.js";
 
 export class OpenScadOptions {
   /**
@@ -75,7 +55,7 @@ export class OpenScadOptions {
    */
   public option3mf: Option3mf = new Option3mf({});
 
-  constructor(cfg: object) {
+  constructor(cfg: RecursivePartial<OpenScadOptions>) {
     Object.assign(this, cfg);
   }
 
@@ -93,12 +73,34 @@ export class OpenScadOptions {
   }
 }
 
+export class ExperimentalFeatures {
+  public roof: boolean = true;
+  public input_driver_dbus: boolean = false;
+  public lazy_union: boolean = true;
+  public vertex_object_renderers_indexing: boolean = true;
+  public textmetrics: boolean = true;
+  public import_function: boolean = true;
+  public predictible_output: boolean = true;
+  public python_engine: boolean = false;
+
+  constructor(cfg: RecursivePartial<ExperimentalFeatures>) {
+    Object.assign(this, cfg);
+  }
+
+  public getExperimentalFeatures() {
+    return Object.entries(this)
+      .filter(([, value]) => value)
+      .map(([key]) => ` --enable ${key.replaceAll("_", "-")}`)
+      .join(" ");
+  }
+}
+
 export class CameraPosition {
   public translate: { x: number; y: number; z: number } | undefined;
   public rotate: { x: number; y: number; z: number } | undefined;
   public dist: number | undefined;
 
-  constructor(cfg: object) {
+  constructor(cfg: RecursivePartial<CameraPosition>) {
     Object.assign(this, cfg);
   }
 }
@@ -107,7 +109,7 @@ export class CameraEye {
   public eye: { x: number; y: number; z: number } | undefined;
   public center: { x: number; y: number; z: number } | undefined;
 
-  constructor(cfg: object) {
+  constructor(cfg: RecursivePartial<CameraEye>) {
     Object.assign(this, cfg);
   }
 }
@@ -133,7 +135,7 @@ export class ImageOptions {
   /**
    * width,height of exported png
    */
-  public imgsize: { width: number; height: number } | null = null;
+  public imgsize: { width: number; height: number } = { width: 1024, height: 1024 };
   /**
    * camera parameters when exporting png: =translate_x,y,z,rot_x,y,z,dist or =eye_x,y,z,center_x,y,z
    */
@@ -171,7 +173,7 @@ export class ImageOptions {
    */
   public preview: "throwntogether" | null = null;
 
-  constructor(cfg: object) {
+  constructor(cfg: RecursivePartial<ImageOptions>) {
     Object.assign(this, cfg);
   }
 
@@ -201,9 +203,9 @@ export class AnimOptions extends ImageOptions {
   /**
    * export N animated frames
    */
-  public animate: number = 50;
+  public animate: number = 20;
   /**
-   * export N animated frames
+   * Delay between frames in milliseconds. Default is 100ms.
    */
   public animDelay: number = 100;
   /**
@@ -211,7 +213,7 @@ export class AnimOptions extends ImageOptions {
    */
   public animate_sharding: { shard: number; num_shards: number } | null = null;
 
-  constructor(cfg: object) {
+  constructor(cfg: RecursivePartial<AnimOptions>) {
     super(cfg);
     Object.assign(this, cfg);
   }
@@ -268,7 +270,7 @@ export class Option3mf {
   public meta_data_license_terms: string = "";
   public meta_data_rating: string = "";
 
-  constructor(cfg: object) {
+  constructor(cfg: RecursivePartial<Option3mf>) {
     Object.assign(this, cfg);
   }
 
