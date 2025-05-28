@@ -13,14 +13,10 @@ export class ExperimentalFeatures {
   }
 
   public getExperimentalFeatures() {
-    return (
-      Object.entries(this)
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        .filter(([key, value]) => value)
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        .map(([key, value]) => ` --enable ${key.replaceAll("_", "-")}`)
-        .join(" ")
-    );
+    return Object.entries(this)
+      .filter(([, value]) => value)
+      .map(([key]) => ` --enable ${key.replaceAll("_", "-")}`)
+      .join(" ");
   }
 }
 
@@ -30,10 +26,6 @@ export class OpenScadOptions {
    * openscad, openscad-nightly, xvfb-run openscad, xvfb-run openscad-nightly
    */
   public openScadExecutable: string = "openscad";
-  /**
-   * output directory for generated files
-   */
-  public outputDir: string = "./";
   /**
    * 3D rendering backend to use: 'CGAL' (old/slow) or 'Manifold' (new/fast)
    */
@@ -70,6 +62,18 @@ export class OpenScadOptions {
    * arg =module Call pip python module
    */
   public python_module: string | null = null;
+  /**
+   * options for image export
+   */
+  public imageOptions: ImageOptions = new ImageOptions({});
+  /**
+   * options for animation export
+   */
+  public animOptions: AnimOptions = new AnimOptions({});
+  /**
+   * options for 3mf export
+   */
+  public option3mf: Option3mf = new Option3mf({});
 
   constructor(cfg: object) {
     Object.assign(this, cfg);

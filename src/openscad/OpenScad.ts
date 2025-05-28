@@ -2,16 +2,7 @@ import * as path from "node:path";
 import fs from "node:fs";
 import { customAlphabet } from "nanoid";
 
-import {
-  AnimOptions,
-  Export2dFormat,
-  Export3dFormat,
-  ExportFormat,
-  ExportTextFormat,
-  ImageOptions,
-  OpenScadOptions,
-  Option3mf,
-} from "./OpenScadOptions.js";
+import { Export2dFormat, Export3dFormat, ExportFormat, ExportTextFormat, OpenScadOptions } from "./OpenScadOptions.js";
 import { ParameterDefinition } from "./ParameterDefinition.js";
 import { ParameterFileSet, ParameterKV, ParameterSet, ParameterSetName } from "./ParameterSet.js";
 import { ModelSummary } from "./OpenScadSummary.js";
@@ -20,18 +11,18 @@ import { OpenScadOutputWithParameterDefinition, OpenScadOutputWithSummary } from
 export type Executor = (cmd: string) => Promise<string>;
 
 export class OpenScad {
+  nanoid = customAlphabet("1234567890abcdef", 10);
+
   constructor(
     private filePath: string,
-    private options: OpenScadOptions,
+    private outputDir: string,
     private exec: Executor,
   ) {}
 
-  nanoid = customAlphabet("1234567890abcdef", 10);
-
-  public async getParameterDefinition(): Promise<OpenScadOutputWithParameterDefinition> {
+  public async getParameterDefinition(options: OpenScadOptions): Promise<OpenScadOutputWithParameterDefinition> {
     const outFile = this.getFileByFormat(ExportTextFormat.param, "");
     const out = await this.exec(
-      `${this.options.openScadExecutable} ${this.options.getOptions()} --export-format ${ExportTextFormat.param} -o ${outFile} ${this.filePath}`,
+      `${options.openScadExecutable} ${options.getOptions()} --export-format ${ExportTextFormat.param} -o ${outFile} ${this.filePath}`,
     );
     const paramDef: ParameterDefinition = JSON.parse(fs.readFileSync(outFile, "utf8")) as ParameterDefinition;
     return {
@@ -44,13 +35,13 @@ export class OpenScad {
 
   public async generateImage(
     params: ParameterFileSet | ParameterSetName | ParameterKV[],
-    imageOptions: ImageOptions,
+    options: OpenScadOptions,
   ): Promise<OpenScadOutputWithSummary> {
     const paramSet = this.toParameterFile(params);
     const outFile = this.getFileByFormat(Export2dFormat.png, paramSet.parameterName);
     const summaryFile = this.getFileByFormat(ExportTextFormat.summary, paramSet.parameterName);
     const out = await this.exec(
-      `${this.options.openScadExecutable} ${this.options.getOptions()} ${imageOptions.getOptions()} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} -o ${outFile} ${this.filePath}`,
+      `${options.openScadExecutable} ${options.getOptions()} ${options.imageOptions.getOptions()} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} -o ${outFile} ${this.filePath}`,
     );
     const summary = JSON.parse(fs.readFileSync(summaryFile, "utf8")) as ModelSummary;
     this.cleanParameterFile(params, paramSet);
@@ -65,14 +56,14 @@ export class OpenScad {
 
   public async generateAnimation(
     params: ParameterFileSet | ParameterSetName | ParameterKV[],
-    animOptions: AnimOptions,
+    options: OpenScadOptions,
   ): Promise<OpenScadOutputWithSummary> {
     const paramSet = this.toParameterFile(params);
     const outFile = this.getFileByFormat(Export2dFormat.png, paramSet.parameterName, true);
     const outFilePattern = outFile.replace(".png", "*.png");
     const summaryFile = this.getFileByFormat(ExportTextFormat.summary, paramSet.parameterName);
     const out = await this.exec(
-      `${this.options.openScadExecutable} ${this.options.getOptions()} ${animOptions.getOptions()} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} -o ${outFile} ${this.filePath}`,
+      `${options.openScadExecutable} ${options.getOptions()} ${options.animOptions.getOptions()} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} -o ${outFile} ${this.filePath}`,
     );
     const summary = JSON.parse(fs.readFileSync(summaryFile, "utf8")) as ModelSummary;
     this.cleanParameterFile(params, paramSet);
@@ -88,13 +79,13 @@ export class OpenScad {
   public async generateModel(
     params: ParameterFileSet | ParameterSetName | ParameterKV[],
     format: Export3dFormat,
-    option3mf: Option3mf | null,
+    options: OpenScadOptions,
   ): Promise<OpenScadOutputWithSummary> {
     const paramSet = this.toParameterFile(params);
     const outFile = this.getFileByFormat(format, paramSet.parameterName);
     const summaryFile = this.getFileByFormat(ExportTextFormat.summary, paramSet.parameterName);
     const out = await this.exec(
-      `${this.options.openScadExecutable} ${this.options.getOptions()} ${option3mf?.getOptions()} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} --export-format ${format} -o ${outFile} ${this.filePath}`,
+      `${options.openScadExecutable} ${options.getOptions()} ${options.option3mf.getOptions()} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} --export-format ${format} -o ${outFile} ${this.filePath}`,
     );
     const summary = JSON.parse(fs.readFileSync(summaryFile, "utf8")) as ModelSummary;
     this.cleanParameterFile(params, paramSet);
@@ -125,7 +116,7 @@ export class OpenScad {
 
   private getFileByFormat(format: ExportFormat, suffix: string, forAnim: boolean = false): string {
     return path.join(
-      this.options.outputDir,
+      this.outputDir,
       `${path.parse(this.filePath).name}${suffix ? "_" + suffix : ""}${forAnim ? "_animImg" : ""}.${this.getFileFormatExtension(format)}`,
     );
   }
