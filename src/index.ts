@@ -1,5 +1,5 @@
 export * from "./openscad/OpenScad.js";
-export * from "./openscad/OpenScadOptions.js";
+export * from "./openscad/IOpenScadOptions.js";
 export * from "./openscad/OpenScadOutput.js";
 export * from "./openscad/ParameterSet.js";
 
