@@ -1,4 +1,3 @@
-
 export interface IOpenScadOptions {
   openScadExecutable: string;
   backend: "CGAL" | "Manifold";

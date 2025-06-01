@@ -3,6 +3,7 @@ export * from "./openscad/IOpenScadOptions.js";
 export * from "./openscad/OpenScadOutput.js";
 export * from "./openscad/ParameterSet.js";
 
+export * from "./schemas/openscadOptionsSchema.js";
 export * from "./schemas/openscadParameterDefinitionSchema.js";
 export * from "./schemas/openscadParameterKvSchema.js";
 

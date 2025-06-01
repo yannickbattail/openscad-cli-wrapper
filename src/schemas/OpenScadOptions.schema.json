@@ -1,0 +1,467 @@
+{
+  "anyOf": [],
+  "oneOf": [],
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OpenScadOptions",
+  "type": "object",
+  "properties": {
+    "openScadExecutable": {
+      "type": "string"
+    },
+    "backend": {
+      "type": "string",
+      "enum": ["CGAL", "Manifold"]
+    },
+    "experimentalFeatures": {
+      "type": "object",
+      "properties": {
+        "roof": {
+          "type": "boolean"
+        },
+        "input_driver_dbus": {
+          "type": "boolean"
+        },
+        "lazy_union": {
+          "type": "boolean"
+        },
+        "vertex_object_renderers_indexing": {
+          "type": "boolean"
+        },
+        "textmetrics": {
+          "type": "boolean"
+        },
+        "import_function": {
+          "type": "boolean"
+        },
+        "predictible_output": {
+          "type": "boolean"
+        },
+        "python_engine": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "roof",
+        "input_driver_dbus",
+        "lazy_union",
+        "vertex_object_renderers_indexing",
+        "textmetrics",
+        "import_function",
+        "predictible_output",
+        "python_engine"
+      ],
+      "additionalProperties": false
+    },
+    "quiet": {
+      "type": "boolean"
+    },
+    "hardwarnings": {
+      "type": "boolean"
+    },
+    "check_parameters": {
+      "type": "boolean"
+    },
+    "check_parameter_ranges": {
+      "type": "boolean"
+    },
+    "debug": {
+      "type": ["string", "null"]
+    },
+    "trust_python": {
+      "type": "boolean"
+    },
+    "python_module": {
+      "type": ["string", "null"]
+    },
+    "imageOptions": {
+      "type": "object",
+      "properties": {
+        "imgsize": {
+          "type": "object",
+          "properties": {
+            "width": {
+              "type": "number"
+            },
+            "height": {
+              "type": "number"
+            }
+          },
+          "required": ["width", "height"],
+          "additionalProperties": false
+        },
+        "camera": {
+          "type": ["object", "null"],
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "translate": {
+                  "type": ["object", "undefined"],
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "z": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["x", "y", "z"],
+                  "additionalProperties": false
+                },
+                "rotate": {
+                  "type": ["object", "undefined"],
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "z": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["x", "y", "z"],
+                  "additionalProperties": false
+                },
+                "dist": {
+                  "type": ["number", "undefined"]
+                }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "eye": {
+                  "type": ["object", "undefined"],
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "z": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["x", "y", "z"],
+                  "additionalProperties": false
+                },
+                "center": {
+                  "type": ["object", "undefined"],
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "z": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["x", "y", "z"],
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        "autocenter": {
+          "type": "boolean"
+        },
+        "viewall": {
+          "type": "boolean"
+        },
+        "view": {
+          "type": ["string", "null"],
+          "enum": ["axes", "crosshairs", "edges", "scales", null]
+        },
+        "projection": {
+          "type": ["string", "null"],
+          "enum": ["o", "p", null]
+        },
+        "colorscheme": {
+          "type": ["string", "null"],
+          "enum": [
+            "Cornfield",
+            "Metallic",
+            "Sunset",
+            "Starnight",
+            "BeforeDawn",
+            "Nature",
+            "Daylight Gem",
+            "Nocturnal Gem",
+            "DeepOcean",
+            "Solarized",
+            "Tomorrow",
+            "Tomorrow Night",
+            "ClearSky",
+            "Monotone",
+            null
+          ]
+        },
+        "render": {
+          "type": ["boolean", "null"]
+        },
+        "csglimit": {
+          "type": ["number", "null"]
+        },
+        "preview": {
+          "type": ["string", "null"],
+          "enum": ["throwntogether", null]
+        }
+      },
+      "required": ["imgsize", "autocenter", "viewall"],
+      "additionalProperties": false
+    },
+    "animOptions": {
+      "type": "object",
+      "properties": {
+        "imgsize": {
+          "type": "object",
+          "properties": {
+            "width": {
+              "type": "number"
+            },
+            "height": {
+              "type": "number"
+            }
+          },
+          "required": ["width", "height"],
+          "additionalProperties": false
+        },
+        "camera": {
+          "type": ["object", "null"],
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "translate": {
+                  "type": ["object", "undefined"],
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "z": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["x", "y", "z"],
+                  "additionalProperties": false
+                },
+                "rotate": {
+                  "type": ["object", "undefined"],
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "z": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["x", "y", "z"],
+                  "additionalProperties": false
+                },
+                "dist": {
+                  "type": ["number", "undefined"]
+                }
+              },
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "eye": {
+                  "type": ["object", "undefined"],
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "z": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["x", "y", "z"],
+                  "additionalProperties": false
+                },
+                "center": {
+                  "type": ["object", "undefined"],
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "z": {
+                      "type": "number"
+                    }
+                  },
+                  "required": ["x", "y", "z"],
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        "autocenter": {
+          "type": "boolean"
+        },
+        "viewall": {
+          "type": "boolean"
+        },
+        "view": {
+          "type": ["string", "null"],
+          "enum": ["axes", "crosshairs", "edges", "scales", null]
+        },
+        "projection": {
+          "type": ["string", "null"],
+          "enum": ["o", "p", null]
+        },
+        "colorscheme": {
+          "type": ["string", "null"],
+          "enum": [
+            "Cornfield",
+            "Metallic",
+            "Sunset",
+            "Starnight",
+            "BeforeDawn",
+            "Nature",
+            "Daylight Gem",
+            "Nocturnal Gem",
+            "DeepOcean",
+            "Solarized",
+            "Tomorrow",
+            "Tomorrow Night",
+            "ClearSky",
+            "Monotone",
+            null
+          ]
+        },
+        "render": {
+          "type": ["boolean", "null"]
+        },
+        "csglimit": {
+          "type": ["number", "null"]
+        },
+        "preview": {
+          "type": ["string", "null"],
+          "enum": ["throwntogether", null]
+        },
+        "animate": {
+          "type": "number"
+        },
+        "animDelay": {
+          "type": "number"
+        },
+        "animate_sharding": {
+          "type": ["object", "null"],
+          "properties": {
+            "shard": {
+              "type": "number"
+            },
+            "num_shards": {
+              "type": "number"
+            }
+          },
+          "required": ["shard", "num_shards"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["imgsize", "autocenter", "viewall", "animate", "animDelay"],
+      "additionalProperties": false
+    },
+    "option3mf": {
+      "type": "object",
+      "properties": {
+        "color_mode": {
+          "type": "string",
+          "enum": ["model", "none", "selected_only"]
+        },
+        "unit": {
+          "type": "string",
+          "enum": ["micron", "millimeter", "centimeter", "meter", "inch", "foot"]
+        },
+        "color": {
+          "type": "string"
+        },
+        "material_type": {
+          "type": "string",
+          "enum": ["color", "basematerial"]
+        },
+        "decimal_precision": {
+          "type": "string",
+          "enum": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"]
+        },
+        "add_meta_data": {
+          "type": "string",
+          "enum": ["true", "false"]
+        },
+        "meta_data_title": {
+          "type": "string"
+        },
+        "meta_data_designer": {
+          "type": "string"
+        },
+        "meta_data_description": {
+          "type": "string"
+        },
+        "meta_data_copyright": {
+          "type": "string"
+        },
+        "meta_data_license_terms": {
+          "type": "string"
+        },
+        "meta_data_rating": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "color_mode",
+        "unit",
+        "color",
+        "material_type",
+        "decimal_precision",
+        "add_meta_data",
+        "meta_data_title",
+        "meta_data_designer",
+        "meta_data_description",
+        "meta_data_copyright",
+        "meta_data_license_terms",
+        "meta_data_rating"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "openScadExecutable",
+    "backend",
+    "experimentalFeatures",
+    "quiet",
+    "hardwarnings",
+    "check_parameters",
+    "check_parameter_ranges",
+    "trust_python",
+    "imageOptions",
+    "animOptions",
+    "option3mf"
+  ],
+  "additionalProperties": false
+}
