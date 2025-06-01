@@ -84,8 +84,9 @@ export class OpenScad {
     const paramSet = this.toParameterFile(params);
     const outFile = this.getFileByFormat(format, paramSet.parameterName);
     const summaryFile = this.getFileByFormat(ExportTextFormat.summary, paramSet.parameterName);
+    const option3mf = format === Export3dFormat["3mf"] ? options.option3mf.getOptions(): "";
     const out = await this.exec(
-      `${options.openScadExecutable} ${options.getOptions()} ${options.option3mf.getOptions()} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} --export-format ${format} -o ${outFile} ${this.filePath}`,
+      `${options.openScadExecutable} ${options.getOptions()} ${option3mf} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} --export-format ${format} -o ${outFile} ${this.filePath}`,
     );
     const summary = JSON.parse(fs.readFileSync(summaryFile, "utf8")) as ModelSummary;
     this.cleanParameterFile(params, paramSet);
