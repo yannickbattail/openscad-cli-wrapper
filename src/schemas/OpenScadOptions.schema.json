@@ -65,7 +65,7 @@
       "type": "boolean"
     },
     "debug": {
-      "type": ["string", "null"]
+      "type": ["boolean", "null"]
     },
     "trust_python": {
       "type": "boolean"

@@ -6,7 +6,7 @@ export interface IOpenScadOptions {
   hardwarnings: boolean;
   check_parameters: boolean;
   check_parameter_ranges: boolean;
-  debug: string | null;
+  debug: boolean | null;
   trust_python: boolean;
   python_module: string | null;
   imageOptions: IImageOptions;

@@ -38,7 +38,7 @@ export const openscadOptionsSchema: JSONSchemaType<IOpenScadOptions> = {
     hardwarnings: { type: "boolean" },
     check_parameters: { type: "boolean" },
     check_parameter_ranges: { type: "boolean" },
-    debug: { type: ["string", "null"] },
+    debug: { type: ["boolean", "null"] },
     trust_python: { type: "boolean" },
     python_module: { type: ["string", "null"] },
     imageOptions: {
