@@ -51,7 +51,7 @@ export class OpenScad {
     const outFile = this.getFileByFormat(Export2dFormat.png, paramSet.parameterName);
     const summaryFile = this.getFileByFormat(ExportTextFormat.summary, paramSet.parameterName);
     const out = await this.exec(
-      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${this.buildImageOptions(options.imageOptions)}} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} -o ${outFile} ${this.filePath}`,
+      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${this.buildImageOptions(options.imageOptions)} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} -o ${outFile} ${this.filePath}`,
     );
     const summary = JSON.parse(fs.readFileSync(summaryFile, "utf8")) as ModelSummary;
     this.cleanParameterFile(params, paramSet);
