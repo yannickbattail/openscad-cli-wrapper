@@ -20,7 +20,7 @@ export class Summary {
   private readonly summaryFile: string;
 
   constructor(outFile: string) {
-    this.summaryFile = `--summary all --summary-file ${outFile}.summary.json`;
+    this.summaryFile = `${outFile}.summary.json`;
   }
 
   public getArg() {
