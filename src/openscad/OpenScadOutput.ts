@@ -18,8 +18,8 @@ export interface OpenScadOutputWithParameterDefinition extends OpenScadOutput {
 }
 
 export class Summary {
-  private readonly summaryFile: string;
   nanoid = customAlphabet("1234567890abcdef", 10);
+  private readonly summaryFile: string;
 
   constructor(outFile: string) {
     this.summaryFile = `${outFile}.summary${this.nanoid()}.json`;
