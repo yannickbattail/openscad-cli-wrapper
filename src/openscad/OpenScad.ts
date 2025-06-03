@@ -4,8 +4,7 @@ import { customAlphabet } from "nanoid";
 
 import { ParameterDefinition } from "./ParameterDefinition.js";
 import { ParameterFileSet, ParameterKV, ParameterSet, ParameterSetName } from "./ParameterSet.js";
-import { ModelSummary } from "./OpenScadSummary.js";
-import { OpenScadOutputWithParameterDefinition, OpenScadOutputWithSummary } from "./OpenScadOutput.js";
+import { OpenScadOutputWithParameterDefinition, OpenScadOutputWithSummary, Summary } from "./OpenScadOutput.js";
 import {
   Export2dFormat,
   Export3dFormat,
@@ -49,17 +48,15 @@ export class OpenScad {
   ): Promise<OpenScadOutputWithSummary> {
     const paramSet = this.toParameterFile(params);
     const outFile = this.getFileByFormat(Export2dFormat.png, paramSet.parameterName);
-    const summaryFile = this.getFileByFormat(ExportTextFormat.summary, paramSet.parameterName);
+    const summary = new Summary(paramSet.parameterFile);
     const out = await this.exec(
-      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${this.buildImageOptions(options.imageOptions)} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} -o ${outFile} ${this.filePath}`,
+      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${this.buildImageOptions(options.imageOptions)} ${summary.getArg()} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} -o ${outFile} ${this.filePath}`,
     );
-    const summary = JSON.parse(fs.readFileSync(summaryFile, "utf8")) as ModelSummary;
     this.cleanParameterFile(params, paramSet);
-    fs.rmSync(summaryFile);
     return {
       output: out,
       modelFile: this.filePath,
-      summary: summary,
+      summary: summary.getSummary(),
       file: outFile,
     };
   }
@@ -71,17 +68,15 @@ export class OpenScad {
     const paramSet = this.toParameterFile(params);
     const outFile = this.getFileByFormat(Export2dFormat.png, paramSet.parameterName, true);
     const outFilePattern = outFile.replace(".png", "*.png");
-    const summaryFile = this.getFileByFormat(ExportTextFormat.summary, paramSet.parameterName);
+    const summary = new Summary(paramSet.parameterFile);
     const out = await this.exec(
-      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${(this, this.buildAnimOption(options.animOptions))} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} -o ${outFile} ${this.filePath}`,
+      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${(this, this.buildAnimOption(options.animOptions))} ${summary.getArg()} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} -o ${outFile} ${this.filePath}`,
     );
-    const summary = JSON.parse(fs.readFileSync(summaryFile, "utf8")) as ModelSummary;
     this.cleanParameterFile(params, paramSet);
-    fs.rmSync(summaryFile);
     return {
       output: out,
       modelFile: this.filePath,
-      summary: summary,
+      summary: summary.getSummary(),
       file: outFilePattern,
     };
   }
@@ -93,18 +88,16 @@ export class OpenScad {
   ): Promise<OpenScadOutputWithSummary> {
     const paramSet = this.toParameterFile(params);
     const outFile = this.getFileByFormat(format, paramSet.parameterName);
-    const summaryFile = this.getFileByFormat(ExportTextFormat.summary, paramSet.parameterName);
+    const summary = new Summary(paramSet.parameterFile);
     const option3mf = format === Export3dFormat["3mf"] ? this.build3mfOptions(options.option3mf) : "";
     const out = await this.exec(
-      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${option3mf} --summary all --summary-file ${summaryFile} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} --export-format ${format} -o ${outFile} ${this.filePath}`,
+      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${option3mf} ${summary.getArg()} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} --export-format ${format} -o ${outFile} ${this.filePath}`,
     );
-    const summary = JSON.parse(fs.readFileSync(summaryFile, "utf8")) as ModelSummary;
     this.cleanParameterFile(params, paramSet);
-    fs.rmSync(summaryFile);
     return {
       output: out,
       modelFile: this.filePath,
-      summary: summary,
+      summary: summary.getSummary(),
       file: outFile,
     };
   }

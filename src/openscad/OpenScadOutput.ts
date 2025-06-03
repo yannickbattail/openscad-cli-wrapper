@@ -1,5 +1,6 @@
 import { ModelSummary } from "./OpenScadSummary.js";
 import { ParameterDefinition } from "./ParameterDefinition.js";
+import fs from "node:fs";
 
 export interface OpenScadOutput {
   output: string;
@@ -13,4 +14,26 @@ export interface OpenScadOutputWithSummary extends OpenScadOutput {
 
 export interface OpenScadOutputWithParameterDefinition extends OpenScadOutput {
   parameterDefinition: ParameterDefinition;
+}
+
+export class Summary {
+  private readonly summaryFile: string;
+
+  constructor(outFile: string) {
+    this.summaryFile = `--summary all --summary-file ${outFile}.summary.json`;
+  }
+
+  public getArg() {
+    return `--summary all --summary-file ${this.summaryFile}`;
+  }
+
+  getSummary(): ModelSummary {
+    const summaryFile = this.summaryFile;
+    if (!fs.existsSync(summaryFile)) {
+      throw new Error(`Summary file ${summaryFile} does not exist.`);
+    }
+    const summary: ModelSummary = JSON.parse(fs.readFileSync(summaryFile, "utf8")) as ModelSummary;
+    fs.rmSync(summaryFile);
+    return summary;
+  }
 }
