@@ -71,3 +71,7 @@ export async function execCommand(
     throw e;
   }
 }
+
+export function esc(str: string): string {
+  return str.replace("'", "\\'");
+}

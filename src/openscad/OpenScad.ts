@@ -16,6 +16,7 @@ import {
   IOpenScadOptions,
   IOption3mf,
 } from "./IOpenScadOptions.js";
+import { esc } from "../util/execBash.js";
 
 export type Executor = (cmd: string) => Promise<string>;
 
@@ -167,7 +168,7 @@ export class OpenScad {
     opt += option.check_parameter_ranges ? " --check-parameter-ranges" : "";
     opt += option.debug ? ` --debug '${option.debug}'` : "";
     opt += option.trust_python ? " --trust-python" : "";
-    opt += option.python_module ? ` --python-module '${option.python_module}'` : "";
+    opt += option.python_module ? ` --python-module '${esc(option.python_module)}'` : "";
     return opt;
   }
 
@@ -210,7 +211,7 @@ export class OpenScad {
 
   private build3mfOptions(option3mf: IOption3mf) {
     return Object.entries(option3mf)
-      .map(([key, value]) => `-O 'export-3mf/${key.replaceAll("_", "-")}=${value.replaceAll("'", "\\'")}'`)
+      .map(([key, value]) => `-O 'export-3mf/${key.replaceAll("_", "-")}=${esc(value)}'`)
       .join(" ");
   }
 }
