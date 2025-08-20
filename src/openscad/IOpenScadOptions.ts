@@ -12,6 +12,8 @@ export interface IOpenScadOptions {
   imageOptions: IImageOptions;
   animOptions: IAnimOptions;
   option3mf: IOption3mf;
+  optionPdf: IOptionPdf;
+  optionSvg: IOptionSvg;
 }
 
 export interface IExperimentalFeatures {
@@ -86,6 +88,34 @@ export interface IOption3mf {
   meta_data_copyright: string;
   meta_data_license_terms: string;
   meta_data_rating: string;
+}
+
+export interface IOptionPdf {
+  paper_size: "a6" | "a5" | "a4" | "a3" | "letter" | "legal" | "tabloid";
+  orientation: "portrait" | "landscape" | "auto";
+  show_filename: "true" | "false";
+  show_scale: "true" | "false";
+  show_scale_message: "true" | "false";
+  show_grid: "true" | "false";
+  grid_size: number;
+  add_meta_data: "true" | "false";
+  meta_data_title: string;
+  meta_data_author: string;
+  meta_data_subject: string;
+  meta_data_keywords: string;
+  fill: "true" | "false";
+  fill_color: string;
+  stroke: "true" | "false";
+  stroke_color: string;
+  stroke_width: number;
+}
+
+export interface IOptionSvg {
+  fill: "true" | "false";
+  fill_color: string;
+  stroke: "true" | "false";
+  stroke_color: string;
+  stroke_width: number;
 }
 
 export enum precision {

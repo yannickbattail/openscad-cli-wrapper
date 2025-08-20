@@ -15,6 +15,8 @@ import {
   IImageOptions,
   IOpenScadOptions,
   IOption3mf,
+  IOptionPdf,
+  IOptionSvg,
 } from "./IOpenScadOptions.js";
 import { esc } from "../util/execBash.js";
 
@@ -87,12 +89,28 @@ export class OpenScad {
     format: Export3dFormat,
     options: IOpenScadOptions,
   ): Promise<OpenScadOutputWithSummary> {
+    return this.generate2d3d(params, format, options);
+  }
+
+  public async generate2d(
+    params: ParameterFileSet | ParameterSetName | ParameterKV[],
+    format: Export2dFormat,
+    options: IOpenScadOptions,
+  ): Promise<OpenScadOutputWithSummary> {
+    return this.generate2d3d(params, format, options);
+  }
+
+  private async generate2d3d(
+    params: ParameterFileSet | ParameterSetName | ParameterKV[],
+    format: Export2dFormat | Export3dFormat,
+    options: IOpenScadOptions,
+  ): Promise<OpenScadOutputWithSummary> {
     const paramSet = this.toParameterFile(params);
     const outFile = this.getFileByFormat(format, paramSet.parameterName);
     const summary = new Summary(paramSet.parameterFile);
-    const option3mf = format === Export3dFormat["3mf"] ? this.build3mfOptions(options.option3mf) : "";
+    const formatOptions = this.getFormatOption(format, options);
     const out = await this.exec(
-      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${option3mf} ${summary.getArg()} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} --export-format ${format} -o ${outFile} ${this.filePath}`,
+      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${formatOptions} ${summary.getArg()} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} --export-format ${format} -o ${outFile} ${this.filePath}`,
     );
     this.cleanParameterFile(params, paramSet);
     return {
@@ -101,6 +119,10 @@ export class OpenScad {
       summary: summary.getSummary(),
       file: outFile,
     };
+  }
+
+  private getFormatOption(format: Export3dFormat | Export2dFormat, options: IOpenScadOptions): string {
+    return format === Export3dFormat["3mf"] ? this.buildFormatOptions(options.option3mf) : "";
   }
 
   private getFileFormatExtension(format: ExportFormat): string {
@@ -209,8 +231,8 @@ export class OpenScad {
     return opt;
   }
 
-  private build3mfOptions(option3mf: IOption3mf) {
-    return Object.entries(option3mf)
+  private buildFormatOptions(optionSvg: IOption3mf | IOptionPdf | IOptionSvg) {
+    return Object.entries(optionSvg)
       .map(([key, value]) => `-O 'export-3mf/${key.replaceAll("_", "-")}=${esc(value)}'`)
       .join(" ");
   }
