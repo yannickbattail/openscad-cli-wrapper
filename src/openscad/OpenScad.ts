@@ -23,7 +23,7 @@ import { esc } from "../util/execBash.js";
 export type Executor = (cmd: string) => Promise<string>;
 
 export class OpenScad {
-  nanoid = customAlphabet("1234567890abcdef", 10);
+  private nanoid = customAlphabet("1234567890abcdef", 10);
 
   constructor(
     private filePath: string,
@@ -242,7 +242,7 @@ export class OpenScad {
 
   private buildFormatOptions(option: IOption3mf | IOptionPdf | IOptionSvg, format: Export3dFormat | Export2dFormat) {
     return Object.entries(option)
-      .map(([key, value]) => `-O 'export-${format}/${key.replaceAll("_", "-")}=${"" + esc(value)}'`)
+      .map(([key, value]) => `-O 'export-${format}/${key.replaceAll("_", "-")}=${esc(value)}'`)
       .join(" ");
   }
 }

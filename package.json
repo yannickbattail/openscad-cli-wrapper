@@ -1,7 +1,7 @@
 {
   "name": "openscad-cli-wrapper",
   "description": "wrapper library around openscad",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "author": "XcinnaY",
   "maintainer": "XcinnaY",
   "license": "LGPL-3.0-or-later",
