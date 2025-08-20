@@ -124,11 +124,11 @@ export class OpenScad {
   private getFormatOption(format: Export3dFormat | Export2dFormat, options: IOpenScadOptions): string {
     switch (format) {
       case Export3dFormat["3mf"]:
-        return this.buildFormatOptions(options.option3mf);
+        return this.buildFormatOptions(options.option3mf, format);
       case Export2dFormat.pdf:
-        return this.buildFormatOptions(options.optionPdf);
+        return this.buildFormatOptions(options.optionPdf, format);
       case Export2dFormat.svg:
-        return this.buildFormatOptions(options.optionSvg);
+        return this.buildFormatOptions(options.optionSvg, format);
       default:
         return "";
     }
@@ -240,9 +240,9 @@ export class OpenScad {
     return opt;
   }
 
-  private buildFormatOptions(optionSvg: IOption3mf | IOptionPdf | IOptionSvg) {
-    return Object.entries(optionSvg)
-      .map(([key, value]) => `-O 'export-3mf/${key.replaceAll("_", "-")}=${esc(value)}'`)
+  private buildFormatOptions(option: IOption3mf | IOptionPdf | IOptionSvg, format: Export3dFormat | Export2dFormat) {
+    return Object.entries(option)
+      .map(([key, value]) => `-O 'export-${format}/${key.replaceAll("_", "-")}=${esc(value)}'`)
       .join(" ");
   }
 }
