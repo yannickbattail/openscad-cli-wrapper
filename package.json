@@ -12,7 +12,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "clean": "rm rm -Rf ./*.js ./*/*.js coverage dist || true",
+    "clean": "rm -Rf ./*.js ./*/*.js coverage dist tests/unit/run/out || true",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "test": "vitest run --coverage ./tests/",
