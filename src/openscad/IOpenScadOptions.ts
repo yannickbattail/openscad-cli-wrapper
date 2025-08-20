@@ -21,6 +21,7 @@ export interface IExperimentalFeatures {
   vertex_object_renderers_indexing: boolean;
   textmetrics: boolean;
   import_function: boolean;
+  object_function: boolean;
   predictible_output: boolean;
   python_engine: boolean;
 }
