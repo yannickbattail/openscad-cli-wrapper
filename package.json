@@ -1,7 +1,7 @@
 {
   "name": "openscad-cli-wrapper",
   "description": "wrapper library around openscad",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "author": "XcinnaY",
   "maintainer": "XcinnaY",
   "license": "LGPL-3.0-or-later",
@@ -21,7 +21,7 @@
     "depcheck": "npx depcheck@latest --quiet --ignore-path=./.gitignore --ignores='@types/*,@vitest/coverage-v8'",
     "check": "npm run depcheck && npm run build && npm run lint && npm run format && npm run test",
     "check-updates": "npx npm-check-updates -u && npm i && npm dedupe && npm run check",
-    "publish-new-v": "npm version patch && npm run check && npm publish"
+    "publish-new-v": "npm version patch --no-git-tag-version && npm run check && npm publish"
   },
   "dependencies": {
     "ajv": "^8.17.1",

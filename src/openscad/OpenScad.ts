@@ -122,7 +122,16 @@ export class OpenScad {
   }
 
   private getFormatOption(format: Export3dFormat | Export2dFormat, options: IOpenScadOptions): string {
-    return format === Export3dFormat["3mf"] ? this.buildFormatOptions(options.option3mf) : "";
+    switch (format) {
+      case Export3dFormat["3mf"]:
+        return this.buildFormatOptions(options.option3mf);
+      case Export2dFormat.pdf:
+        return this.buildFormatOptions(options.optionPdf);
+      case Export2dFormat.svg:
+        return this.buildFormatOptions(options.optionSvg);
+      default:
+        return "";
+    }
   }
 
   private getFileFormatExtension(format: ExportFormat): string {
