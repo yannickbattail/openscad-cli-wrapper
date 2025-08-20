@@ -242,7 +242,7 @@ export class OpenScad {
 
   private buildFormatOptions(option: IOption3mf | IOptionPdf | IOptionSvg, format: Export3dFormat | Export2dFormat) {
     return Object.entries(option)
-      .map(([key, value]) => `-O 'export-${format}/${key.replaceAll("_", "-")}=${esc(value)}'`)
+      .map(([key, value]) => `-O 'export-${format}/${key.replaceAll("_", "-")}=${"" + esc(value)}'`)
       .join(" ");
   }
 }
