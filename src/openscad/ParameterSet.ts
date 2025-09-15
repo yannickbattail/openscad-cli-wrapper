@@ -1,3 +1,5 @@
+import fs from "node:fs";
+
 export class ParameterSet {
   public parameterSets: Record<string, Record<string, string>> = {};
   public fileFormatVersion: "1" = "1" as const;
@@ -6,6 +8,10 @@ export class ParameterSet {
     if (p) {
       Object.assign(this, p);
     }
+  }
+
+  public static createFromFile(filePath: string): ParameterSet {
+    return JSON.parse(fs.readFileSync(filePath, "utf8")) as ParameterSet;
   }
 
   public static toParameterSet(paramKV: ParameterKV[], name: string = "model"): ParameterSet {
