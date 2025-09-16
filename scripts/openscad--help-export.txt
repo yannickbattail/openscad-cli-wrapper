@@ -1,4 +1,4 @@
-OpenSCAD version 2025.09.13.nightly
+OpenSCAD version 2025.09.16.nightly
 
 List of settings that can be given using the -O option using the
 format '<section>/<key>=value', e.g.:
