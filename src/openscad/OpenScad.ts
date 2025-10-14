@@ -34,7 +34,7 @@ export class OpenScad {
   public async getParameterDefinition(options: IOpenScadOptions): Promise<OpenScadOutputWithParameterDefinition> {
     const outFile = this.getFileByFormat(ExportTextFormat.param, "");
     const out = await this.exec(
-      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} --export-format ${ExportTextFormat.param} -o ${outFile} ${this.filePath}`,
+      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} --export-format ${ExportTextFormat.param} -o '${outFile}' '${this.filePath}'`,
     );
     const paramDef: ParameterDefinition = JSON.parse(fs.readFileSync(outFile, "utf8")) as ParameterDefinition;
     return {
@@ -53,7 +53,7 @@ export class OpenScad {
     const outFile = this.getFileByFormat(Export2dFormat.png, paramSet.parameterName);
     const summary = new Summary(paramSet.parameterFile);
     const out = await this.exec(
-      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${this.buildImageOptions(options.imageOptions)} ${summary.getArg()} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} -o ${outFile} ${this.filePath}`,
+      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${this.buildImageOptions(options.imageOptions)} ${summary.getArg()} -p '${paramSet.parameterFile}' -P '${paramSet.parameterName}' -o '${outFile}' '${this.filePath}'`,
     );
     this.cleanParameterFile(params, paramSet);
     return {
@@ -73,7 +73,7 @@ export class OpenScad {
     const outFilePattern = outFile.replace(".png", "*.png");
     const summary = new Summary(paramSet.parameterFile);
     const out = await this.exec(
-      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${(this, this.buildAnimOption(options.animOptions))} ${summary.getArg()} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} -o ${outFile} ${this.filePath}`,
+      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${this.buildAnimOption(options.animOptions)} ${summary.getArg()} -p '${paramSet.parameterFile}' -P '${paramSet.parameterName}' -o '${outFile}' '${this.filePath}'`,
     );
     this.cleanParameterFile(params, paramSet);
     return {
@@ -110,7 +110,7 @@ export class OpenScad {
     const summary = new Summary(paramSet.parameterFile);
     const formatOptions = this.getFormatOption(format, options);
     const out = await this.exec(
-      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${formatOptions} ${summary.getArg()} -p ${paramSet.parameterFile} -P ${paramSet.parameterName} --export-format ${format} -o ${outFile} ${this.filePath}`,
+      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${formatOptions} ${summary.getArg()} -p '${paramSet.parameterFile}' -P '${paramSet.parameterName}' --export-format ${format} -o '${outFile}' '${this.filePath}'`,
     );
     this.cleanParameterFile(params, paramSet);
     return {

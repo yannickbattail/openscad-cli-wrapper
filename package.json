@@ -1,13 +1,17 @@
 {
   "name": "openscad-cli-wrapper",
   "description": "wrapper library around openscad",
-  "version": "1.4.7",
+  "version": "1.4.8",
   "author": "XcinnaY",
   "maintainer": "XcinnaY",
   "license": "LGPL-3.0-or-later",
   "type": "module",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yannickbattail/openscad-cli-wrapper"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
@@ -18,26 +22,27 @@
     "test": "vitest run --coverage ./tests/",
     "lint": "eslint --fix src tests",
     "format": "prettier --log-level error --write . --ignore-path ./.gitignore",
-    "depcheck": "npx depcheck@latest --quiet --ignore-path=./.gitignore --ignores='@types/*,@vitest/coverage-v8'",
+    "depcheck": "depcheck --quiet --ignore-path=./.gitignore --ignores='@types/*,@vitest/coverage-v8'",
     "check": "npm run depcheck && npm run build && npm run lint && npm run format && npm run test",
-    "check-updates": "npx npm-check-updates -u && npm i && npm dedupe && npm run check",
+    "check-updates": "npm-check-updates -u && npm i && npm dedupe && npm run check",
     "publish-new-v": "npm version patch --no-git-tag-version && npm run check && npm publish"
   },
   "dependencies": {
     "ajv": "^8.17.1",
     "chalk": "^5.6.2",
-    "nanoid": "^5.1.5"
+    "nanoid": "^5.1.6"
   },
   "devDependencies": {
-    "@eslint/js": "^9.35.0",
-    "@types/node": "^24.5.0",
+    "@eslint/js": "^9.37.0",
+    "@types/node": "^24.7.2",
     "@vitest/coverage-v8": "^3.2.4",
     "depcheck": "^1.4.7",
-    "eslint": "^9.35.0",
+    "eslint": "^9.37.0",
     "globals": "^16.4.0",
+    "npm-check-updates": "^19.1.0",
     "prettier": "^3.6.2",
-    "typescript": "^5.9.2",
-    "typescript-eslint": "^8.44.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.1",
     "vitest": "^3.2.4"
   }
 }
