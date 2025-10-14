@@ -26,7 +26,7 @@ export class Summary {
   }
 
   public getArg() {
-    return `--summary all --summary-file ${this.summaryFile}`;
+    return `--summary all --summary-file '${this.summaryFile}'`;
   }
 
   getSummary(): ModelSummary {
