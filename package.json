@@ -8,6 +8,10 @@
   "type": "module",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yannickbattail/openscad-cli-wrapper"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
@@ -18,9 +22,9 @@
     "test": "vitest run --coverage ./tests/",
     "lint": "eslint --fix src tests",
     "format": "prettier --log-level error --write . --ignore-path ./.gitignore",
-    "depcheck": "npx depcheck@latest --quiet --ignore-path=./.gitignore --ignores='@types/*,@vitest/coverage-v8'",
+    "depcheck": "depcheck --quiet --ignore-path=./.gitignore --ignores='@types/*,@vitest/coverage-v8'",
     "check": "npm run depcheck && npm run build && npm run lint && npm run format && npm run test",
-    "check-updates": "npx npm-check-updates -u && npm i && npm dedupe && npm run check",
+    "check-updates": "npm-check-updates -u && npm i && npm dedupe && npm run check",
     "publish-new-v": "npm version patch --no-git-tag-version && npm run check && npm publish"
   },
   "dependencies": {
@@ -35,6 +39,7 @@
     "depcheck": "^1.4.7",
     "eslint": "^9.35.0",
     "globals": "^16.4.0",
+    "npm-check-updates": "^19.1.0",
     "prettier": "^3.6.2",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.44.0",
