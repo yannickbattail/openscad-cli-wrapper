@@ -23,8 +23,8 @@
     "lint": "eslint --fix src tests",
     "format": "prettier --log-level error --write . --ignore-path ./.gitignore",
     "depcheck": "depcheck --quiet --ignore-path=./.gitignore --ignores='@types/*,@vitest/coverage-v8'",
-    "check": "npm run depcheck && npm run build && npm run lint && npm run format && npm run test && npm run test",
-    "check-amer": "grep amersports package-lock.json && (echo 'ERROR: amersports found in package-lock.json' && exit 1)",
+    "check": "npm run depcheck && npm run build && npm run lint && npm run format && npm run check-amer && npm run test && npm run test",
+    "check-amer": "grep amersports package-lock.json || (echo 'ERROR: amersports found in package-lock.json' && exit 1)",
     "check-updates": "npm-check-updates -u && npm i && npm dedupe && npm run check",
     "publish-new-v": "npm version patch --no-git-tag-version && npm run check && npm publish"
   },
