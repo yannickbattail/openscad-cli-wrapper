@@ -31,7 +31,7 @@ Allowed options:
                                     vertex-object-renderers-indexing | 
                                     textmetrics | import-function | 
                                     object-function | predictible-output | 
-                                    python-engine
+                                    vector-swizzle | python-engine
                                     
   -h [ --help ]                     print this help message and exit
   --help-export                     print list of export parameters and values 
@@ -45,8 +45,8 @@ Allowed options:
   --autocenter                      adjust camera to look at object's center
   --viewall                         adjust camera to fit object
   --backend arg                     3D rendering backend to use: 'CGAL' 
-                                    (old/slow) [default] or 'Manifold' 
-                                    (new/fast)
+                                    (old/slow) or 'Manifold' (new/fast) 
+                                    [default]
   --imgsize arg                     =width,height of exported png
   --render arg                      for full geometry evaluation when exporting
                                     png

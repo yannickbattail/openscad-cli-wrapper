@@ -93,6 +93,7 @@ export function getDefaultOpenscadOptions(): IOpenScadOptions {
       object_function: true,
       input_driver_dbus: false,
       vertex_object_renderers_indexing: false,
+      vector_swizzle: false,
       python_engine: false,
     },
   };
