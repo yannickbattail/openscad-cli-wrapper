@@ -20,6 +20,7 @@ export const openscadOptionsSchema: JSONSchemaType<IOpenScadOptions> = {
         textmetrics: { type: "boolean" },
         import_function: { type: "boolean" },
         predictible_output: { type: "boolean" },
+        vector_swizzle: { type: "boolean" },
         python_engine: { type: "boolean" },
       },
       required: [
@@ -30,6 +31,7 @@ export const openscadOptionsSchema: JSONSchemaType<IOpenScadOptions> = {
         "textmetrics",
         "import_function",
         "predictible_output",
+        "vector_swizzle",
         "python_engine",
       ],
       additionalProperties: false,

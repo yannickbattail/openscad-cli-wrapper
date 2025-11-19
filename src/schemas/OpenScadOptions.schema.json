@@ -36,6 +36,9 @@
         "predictible_output": {
           "type": "boolean"
         },
+        "vector_swizzle": {
+          "type": "boolean"
+        },
         "python_engine": {
           "type": "boolean"
         }
@@ -48,6 +51,7 @@
         "textmetrics",
         "import_function",
         "predictible_output",
+        "vector_swizzle",
         "python_engine"
       ],
       "additionalProperties": false

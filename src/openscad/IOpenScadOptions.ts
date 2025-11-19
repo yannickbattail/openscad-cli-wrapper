@@ -25,6 +25,7 @@ export interface IExperimentalFeatures {
   import_function: boolean;
   object_function: boolean;
   predictible_output: boolean;
+  vector_swizzle: boolean;
   python_engine: boolean;
 }
 
