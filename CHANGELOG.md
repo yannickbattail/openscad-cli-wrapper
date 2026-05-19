@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.4.11] - 2026-05-19
+
+### Added
+
+- handle new experimental features: discretization-by-error
+
 ## [1.4.10] - 2025-11-19
 
 ### Added

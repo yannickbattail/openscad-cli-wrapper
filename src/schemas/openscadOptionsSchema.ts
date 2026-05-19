@@ -21,6 +21,7 @@ export const openscadOptionsSchema: JSONSchemaType<IOpenScadOptions> = {
         import_function: { type: "boolean" },
         predictible_output: { type: "boolean" },
         vector_swizzle: { type: "boolean" },
+        discretization_by_error: { type: "boolean" },
         python_engine: { type: "boolean" },
       },
       required: [
@@ -32,6 +33,7 @@ export const openscadOptionsSchema: JSONSchemaType<IOpenScadOptions> = {
         "import_function",
         "predictible_output",
         "vector_swizzle",
+        "discretization_by_error",
         "python_engine",
       ],
       additionalProperties: false,
