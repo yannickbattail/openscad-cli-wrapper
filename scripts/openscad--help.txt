@@ -31,7 +31,8 @@ Allowed options:
                                     vertex-object-renderers-indexing | 
                                     textmetrics | import-function | 
                                     object-function | predictible-output | 
-                                    vector-swizzle | python-engine
+                                    vector-swizzle | discretization-by-error | 
+                                    python-engine
                                     
   -h [ --help ]                     print this help message and exit
   --help-export                     print list of export parameters and values 

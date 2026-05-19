@@ -39,6 +39,9 @@
         "vector_swizzle": {
           "type": "boolean"
         },
+        "discretization_by_error": {
+          "type": "boolean"
+        },
         "python_engine": {
           "type": "boolean"
         }
@@ -52,6 +55,7 @@
         "import_function",
         "predictible_output",
         "vector_swizzle",
+        "discretization_by_error",
         "python_engine"
       ],
       "additionalProperties": false
