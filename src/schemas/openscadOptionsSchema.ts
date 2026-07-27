@@ -1,5 +1,5 @@
 import { JSONSchemaType } from "ajv";
-import { IOpenScadOptions } from "../openscad/IOpenScadOptions.js";
+import { IOpenScadOptions } from "../types/IOpenScadOptions.js";
 
 export const openscadOptionsSchema: JSONSchemaType<IOpenScadOptions> = {
   anyOf: [],

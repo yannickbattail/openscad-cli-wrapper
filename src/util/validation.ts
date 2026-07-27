@@ -1,5 +1,5 @@
 import Ajv from "ajv";
-import { ParameterKV } from "../openscad/ParameterSet.js";
+import { ParameterKV } from "../types/ParameterSet.js";
 import { openscadParameterKvSchema } from "../schemas/openscadParameterKvSchema.js";
 
 const ajv = new Ajv.default();

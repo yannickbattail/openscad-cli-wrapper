@@ -1,23 +1,8 @@
-import { ModelSummary } from "./OpenScadSummary.js";
-import { ParameterDefinition } from "./ParameterDefinition.js";
+import { ISummary, ModelSummary } from "../types/OpenScadSummary.js";
 import fs from "node:fs";
 import { customAlphabet } from "nanoid";
 
-export interface OpenScadOutput {
-  output: string;
-  modelFile: string;
-  file: string;
-}
-
-export interface OpenScadOutputWithSummary extends OpenScadOutput {
-  summary: ModelSummary;
-}
-
-export interface OpenScadOutputWithParameterDefinition extends OpenScadOutput {
-  parameterDefinition: ParameterDefinition;
-}
-
-export class Summary {
+export class Summary implements ISummary {
   nanoid = customAlphabet("1234567890abcdef", 10);
   private readonly summaryFile: string;
 
@@ -25,7 +10,7 @@ export class Summary {
     this.summaryFile = `${outFile}.summary${this.nanoid()}.json`;
   }
 
-  public getArg() {
+  getArg() {
     return `--summary all --summary-file '${this.summaryFile}'`;
   }
 

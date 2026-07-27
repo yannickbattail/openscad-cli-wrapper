@@ -16,7 +16,7 @@
 
 ### Added
 
-- add method ParameterSet.writeToFile()
+- add method `ParameterSet.writeToFile()`
 
 ### Changed
 
