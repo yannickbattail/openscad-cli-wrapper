@@ -42,20 +42,20 @@ export interface ICameraEye {
 }
 
 export enum ColorScheme {
-  "Cornfield" = "Cornfield",
-  "Metallic" = "Metallic",
-  "Sunset" = "Sunset",
-  "Starnight" = "Starnight",
-  "BeforeDawn" = "BeforeDawn",
-  "Nature" = "Nature",
+  Cornfield = "Cornfield",
+  Metallic = "Metallic",
+  Sunset = "Sunset",
+  Starnight = "Starnight",
+  BeforeDawn = "BeforeDawn",
+  Nature = "Nature",
   "Daylight Gem" = "Daylight Gem",
   "Nocturnal Gem" = "Nocturnal Gem",
-  "DeepOcean" = "DeepOcean",
-  "Solarized" = "Solarized",
-  "Tomorrow" = "Tomorrow",
+  DeepOcean = "DeepOcean",
+  Solarized = "Solarized",
+  Tomorrow = "Tomorrow",
   "Tomorrow Night" = "Tomorrow Night",
-  "ClearSky" = "ClearSky",
-  "Monotone" = "Monotone",
+  ClearSky = "ClearSky",
+  Monotone = "Monotone",
 }
 
 export interface IImageOptions {
