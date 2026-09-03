@@ -27,6 +27,7 @@ export interface IExperimentalFeatures {
   predictible_output: boolean;
   vector_swizzle: boolean;
   discretization_by_error: boolean;
+  ai_features: boolean;
   python_engine: boolean;
 }
 
