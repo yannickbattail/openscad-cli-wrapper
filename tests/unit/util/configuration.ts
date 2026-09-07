@@ -95,6 +95,7 @@ export function getDefaultOpenscadOptions(): IOpenScadOptions {
       vertex_object_renderers_indexing: false,
       vector_swizzle: false,
       discretization_by_error: false,
+      ai_features: false,
       python_engine: false,
     },
   };

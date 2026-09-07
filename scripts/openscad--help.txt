@@ -32,7 +32,7 @@ Allowed options:
                                     textmetrics | import-function | 
                                     object-function | predictible-output | 
                                     vector-swizzle | discretization-by-error | 
-                                    python-engine
+                                    ai-features | python-engine
                                     
   -h [ --help ]                     print this help message and exit
   --help-export                     print list of export parameters and values 

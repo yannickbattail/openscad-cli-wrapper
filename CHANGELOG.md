@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.18] - 2026-09-08
+
+### Added
+
+- add a new openscad option ai_features
+- refactor files
+
 ## [1.4.14] - 2026-05-19
 
 ### Added
@@ -16,7 +23,7 @@
 
 ### Added
 
-- add method ParameterSet.writeToFile()
+- add method `ParameterSet.writeToFile()`
 
 ### Changed
 

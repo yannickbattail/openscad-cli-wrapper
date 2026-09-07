@@ -1,5 +1,5 @@
-import { OpenScadOutputWithSummary } from "../openscad/OpenScadOutput.js";
-import { Executor } from "../openscad/OpenScad.js";
+import { OpenScadOutputWithSummary } from "../types/OpenScadSummary.js";
+import { Executor } from "../types/IOpenScad.js";
 
 export async function GenerateAnimation(
   output: OpenScadOutputWithSummary,

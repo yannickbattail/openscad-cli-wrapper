@@ -1,6 +1,6 @@
-import { ParameterFileSet } from "../openscad/ParameterSet.js";
-import { OpenScadOutputWithSummary } from "../openscad/OpenScadOutput.js";
-import { Executor } from "../openscad/OpenScad.js";
+import { ParameterFileSet } from "../types/ParameterSet.js";
+import { OpenScadOutputWithSummary } from "../types/OpenScadSummary.js";
+import { Executor } from "../types/IOpenScad.js";
 
 export function GenerateMosaic(
   parameterFileSet: ParameterFileSet,

@@ -2,11 +2,11 @@
 part = "ball"; // [all, ball, stick]
 
 // size of the model
-size=50; // [10:5:100]
+size = 50; // [10:5:100]
 
 /* [Animation] */
 // resolution
-$fn=10;
+$fn = 10;
 
 /* [Animation] */
 // rotating animation
@@ -29,10 +29,10 @@ if (part == "ball") {
 
 module stick(size) {
   color("red")
-    square([size/20, size], center=true);
+    square([size / 20, size], center = true);
 }
 
 module ball(size) {
   color("green")
-    circle(d=size/2, center=true);
+    circle(d = size / 2, center = true);
 }
