@@ -96,6 +96,7 @@ export function getDefaultOpenscadOptions(): IOpenScadOptions {
       vector_swizzle: false,
       discretization_by_error: false,
       ai_features: false,
+      unicode_identifiers: false,
       python_engine: false,
     },
   };

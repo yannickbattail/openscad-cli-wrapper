@@ -1,16 +1,13 @@
-import { exec } from "child_process";
 import chalk from "chalk";
-import util from "util";
+import { Executor } from "../types/IOpenScad.js";
+import { spawn } from "node:child_process";
 
-export type Stdio = "pipe" | "stdout";
-
-export function createFctExecCommand(quietMode: boolean, showCommand = false): (command: string) => Promise<string> {
-  return async (command: string): Promise<string> => {
+export function createFctExecCommand(quietMode: boolean, showCommand = false): Executor {
+  return async (command: string[]): Promise<{ code: number | null; stdout: string; stderr: string }> => {
     return (
       (await execCommand(
         command,
         {
-          stdio: quietMode ? "pipe" : "stdout",
           allowFailure: false,
           quietMode: quietMode,
         },
@@ -26,7 +23,6 @@ export function createFctExecCommand(quietMode: boolean, showCommand = false): (
  * @param command - The shell command to execute.
  * @param options - Optional configuration for the command execution.
  * @param options.cwd - The working directory to execute the command in. Defaults to the current working directory.
- * @param options.stdio - The stdio configuration for the command. Can be 'pipe' or default to inherit standard streams.
  * @param options.allowFailure - If true, suppresses errors and allows the command to fail without throwing. Defaults to false.
  * @param options.quietMode - If true and `stdio` is set to 'pipe', suppresses the output of the command. Defaults to false.
  * @param showCommand log the command being executed to the console. Defaults to false.
@@ -34,44 +30,72 @@ export function createFctExecCommand(quietMode: boolean, showCommand = false): (
  * @throws An error if the command fails and `allowFailure` is set to false.
  */
 export async function execCommand(
-  command: string,
+  command: string[],
   {
     cwd,
-    stdio,
     allowFailure = false,
     quietMode = false,
   }: {
     cwd?: string;
-    stdio?: Stdio;
     allowFailure?: boolean;
     quietMode?: boolean;
   } = {},
   showCommand = false,
-): Promise<string> {
+): Promise<{ code: number | null; stdout: string; stderr: string }> {
   try {
     if (showCommand) {
-      console.log(chalk.blue(`$ ${command}`));
+      console.log(chalk.blue(`$ ${command.join(" ")}`));
     }
-    const execPromise = util.promisify(exec);
-    const output = await execPromise(command, {
-      cwd,
-      encoding: "utf-8",
-      maxBuffer: 50 * 1024 * 1024,
-    });
-    if (stdio === "pipe" && !quietMode) {
-      console.log(`CMD output: ${output}`);
+    const proc = await spawnAsync(command, !quietMode, cwd);
+    if (proc.code !== 0) {
+      if (allowFailure) {
+        console.warn(chalk.yellow(`Command exits with code ${proc.code}`), proc);
+      } else {
+        throw new Error(`Command exits with code: ${proc.code} stdout: ${proc.stdout} stderr: ${proc.stderr}`);
+      }
     }
-
-    return output.stdout + output.stderr;
+    return proc;
   } catch (e) {
     if (allowFailure) {
       console.warn(chalk.yellow(e && typeof e === "object" && "message" in e ? e.message : e));
-      return "";
+      return { code: null, stderr: "", stdout: "" };
     }
     throw e;
   }
 }
 
-export function esc(str: string): string {
-  return ("" + str).replace("'", "\\'");
+function spawnAsync(
+  command: string[],
+  streamOutput: boolean,
+  cwd?: string,
+): Promise<{ code: number | null; stdout: string; stderr: string }> {
+  return new Promise((resolve, reject) => {
+    const p = spawn(command[0], command.slice(1), { cwd: cwd });
+    let stdout = "";
+    let stderr = "";
+    if (streamOutput) {
+      p.stdout.on("data", (x) => {
+        stdout += x.toString();
+        process.stdout.write(x.toString());
+      });
+      p.stderr.on("data", (x) => {
+        stderr += x.toString();
+        process.stderr.write(x.toString());
+      });
+    } else {
+      p.stdout.on("data", (x) => {
+        stdout += x.toString();
+      });
+      p.stderr.on("data", (x) => {
+        stderr += x.toString();
+      });
+    }
+    p.on("exit", (code) => {
+      if (code === 0) {
+        resolve({ code, stdout, stderr });
+      } else {
+        reject({ code, stdout, stderr });
+      }
+    });
+  });
 }

@@ -10,8 +10,8 @@ export class Summary implements ISummary {
     this.summaryFile = `${outFile}.summary${this.nanoid()}.json`;
   }
 
-  getArg() {
-    return `--summary all --summary-file '${this.summaryFile}'`;
+  buildArgs(): string[] {
+    return ["--summary", "all", "--summary-file", this.summaryFile];
   }
 
   getSummary(): ModelSummary {

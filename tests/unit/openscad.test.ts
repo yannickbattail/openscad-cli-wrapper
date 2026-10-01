@@ -1,25 +1,23 @@
 import { describe, expect, it } from "vitest";
-
-import { execCommand, Export2dFormat, Export3dFormat, OpenScad } from "../../src/index.js";
-import { getDefaultOpenscadOptions } from "./util/configuration.js";
 import { before } from "node:test";
 import { mkdirSync } from "fs";
+import { execCommand, Executor, Export2dFormat, Export3dFormat, OpenScad } from "../../src/index.js";
+import { getDefaultOpenscadOptions } from "./util/configuration.js";
 
 const commands: string[] = [];
 
-function createFctExecCommand(quietMode: boolean, showCommand = false): (command: string) => Promise<string> {
-  return async (command: string): Promise<string> => {
+function createFctExecCommand(quietMode: boolean, showCommand = false): Executor {
+  return async (cmd: string[]): Promise<{ code: number | null; stdout: string; stderr: string }> => {
     const fct =
       (await execCommand(
-        command,
+        cmd,
         {
-          stdio: quietMode ? "pipe" : "stdout",
           allowFailure: false,
           quietMode: quietMode,
         },
         showCommand,
       )) ?? "";
-    commands.push(command);
+    commands.push(JSON.stringify(cmd));
     return fct;
   };
 }
@@ -49,7 +47,38 @@ describe("OpenScad", () => {
     );
     expect(unrandomize(commands[0])).toBe(
       unrandomize(
-        `openscad --backend Manifold --enable import-function  --enable lazy-union  --enable predictible-output  --enable roof  --enable textmetrics  --enable object-function -O 'export-3mf/color-mode=model' -O 'export-3mf/color=' -O 'export-3mf/material-type=color' -O 'export-3mf/unit=millimeter' -O 'export-3mf/decimal-precision=6' -O 'export-3mf/add-meta-data=true' -O 'export-3mf/meta-data-copyright=me 2025' -O 'export-3mf/meta-data-description=__BASE_FILE_NAME__ - __PARAMETER_SET__ (made with OpenSCAD from "file __FILE_NAME__")' -O 'export-3mf/meta-data-designer=me' -O 'export-3mf/meta-data-license-terms=CC BY https://creativecommons.org/licenses/by/4.0/' -O 'export-3mf/meta-data-rating=' -O 'export-3mf/meta-data-title=__BASE_FILE_NAME__ - __PARAMETER_SET__' --summary all --summary-file './tests/unit/run/test3d.json.summaryXXXXXXXXXX.json' -p './tests/unit/run/test3d.json' -P 'all_20' --export-format 3mf -o 'tests/unit/run/out/test3d_all_20.3mf' './tests/unit/run/test3d.scad'`,
+        JSON.stringify([
+          `openscad`,
+          ...[`--backend`, `Manifold`],
+          ...[`--enable`, `import-function`],
+          ...[`--enable`, `lazy-union`],
+          ...[`--enable`, `predictible-output`],
+          ...[`--enable`, `roof`],
+          ...[`--enable`, `textmetrics`],
+          ...[`--enable`, `object-function`],
+          ...[`-O`, `export-3mf/color-mode=model`],
+          ...[`-O`, `export-3mf/color=`],
+          ...[`-O`, `export-3mf/material-type=color`],
+          ...[`-O`, `export-3mf/unit=millimeter`],
+          ...[`-O`, `export-3mf/decimal-precision=6`],
+          ...[`-O`, `export-3mf/add-meta-data=true`],
+          ...[`-O`, `export-3mf/meta-data-copyright=me 2025`],
+          ...[
+            `-O`,
+            `export-3mf/meta-data-description=__BASE_FILE_NAME__ - __PARAMETER_SET__ (made with OpenSCAD from "file __FILE_NAME__")`,
+          ],
+          ...[`-O`, `export-3mf/meta-data-designer=me`],
+          ...[`-O`, `export-3mf/meta-data-license-terms=CC BY https://creativecommons.org/licenses/by/4.0/`],
+          ...[`-O`, `export-3mf/meta-data-rating=`],
+          ...[`-O`, `export-3mf/meta-data-title=__BASE_FILE_NAME__ - __PARAMETER_SET__`],
+          ...[`--summary`, `all`],
+          ...[`--summary-file`, `./tests/unit/run/test3d.json.summaryXXXXXXXXXX.json`],
+          ...[`-p`, `./tests/unit/run/test3d.json`],
+          ...[`-P`, `all_20`],
+          ...[`--export-format`, `3mf`],
+          ...[`-o`, `tests/unit/run/out/test3d_all_20.3mf`],
+          `./tests/unit/run/test3d.scad`,
+        ]),
       ),
     );
   });
@@ -64,7 +93,23 @@ describe("OpenScad", () => {
     );
     expect(unrandomize(commands[0])).toBe(
       unrandomize(
-        `openscad --backend Manifold --enable import-function  --enable lazy-union  --enable predictible-output  --enable roof  --enable textmetrics  --enable object-function  --summary all --summary-file './tests/unit/run/test3d.json.summaryXXXXXXXXXX.json' -p './tests/unit/run/test3d.json' -P 'all_20' --export-format stl -o 'tests/unit/run/out/test3d_all_20.stl' './tests/unit/run/test3d.scad'`,
+        JSON.stringify([
+          `openscad`,
+          ...[`--backend`, `Manifold`],
+          ...[`--enable`, `import-function`],
+          ...[`--enable`, `lazy-union`],
+          ...[`--enable`, `predictible-output`],
+          ...[`--enable`, `roof`],
+          ...[`--enable`, `textmetrics`],
+          ...[`--enable`, `object-function`],
+          ...[`--summary`, `all`],
+          ...[`--summary-file`, `./tests/unit/run/test3d.json.summaryXXXXXXXXXX.json`],
+          ...[`-p`, `./tests/unit/run/test3d.json`],
+          ...[`-P`, `all_20`],
+          ...[`--export-format`, `stl`],
+          ...[`-o`, `tests/unit/run/out/test3d_all_20.stl`],
+          `./tests/unit/run/test3d.scad`,
+        ]),
       ),
     );
   });
@@ -79,7 +124,43 @@ describe("OpenScad", () => {
     );
     expect(unrandomize(commands[0])).toBe(
       unrandomize(
-        `openscad --backend Manifold --enable import-function  --enable lazy-union  --enable predictible-output  --enable roof  --enable textmetrics  --enable object-function -O 'export-pdf/paper-size=a4' -O 'export-pdf/orientation=portrait' -O 'export-pdf/show-filename=false' -O 'export-pdf/show-scale=true' -O 'export-pdf/show-scale-message=true' -O 'export-pdf/show-grid=false' -O 'export-pdf/grid-size=10' -O 'export-pdf/add-meta-data=true' -O 'export-pdf/meta-data-title=__BASE_FILE_NAME__ - __PARAMETER_SET__' -O 'export-pdf/meta-data-author=me' -O 'export-pdf/meta-data-subject=__BASE_FILE_NAME__ - __PARAMETER_SET__ (made with OpenSCAD from "file __FILE_NAME__")' -O 'export-pdf/meta-data-keywords=OpenSCAD, 2D model' -O 'export-pdf/fill=false' -O 'export-pdf/fill-color=black' -O 'export-pdf/stroke=true' -O 'export-pdf/stroke-color=black' -O 'export-pdf/stroke-width=0.35' --summary all --summary-file './tests/unit/run/test2d.json.summaryXXXXXXXXXX.json' -p './tests/unit/run/test2d.json' -P 'all_20' --export-format pdf -o 'tests/unit/run/out/test2d_all_20.pdf' './tests/unit/run/test2d.scad'`,
+        JSON.stringify([
+          `openscad`,
+          ...[`--backend`, `Manifold`],
+          ...[`--enable`, `import-function`],
+          ...[`--enable`, `lazy-union`],
+          ...[`--enable`, `predictible-output`],
+          ...[`--enable`, `roof`],
+          ...[`--enable`, `textmetrics`],
+          ...[`--enable`, `object-function`],
+          ...[`-O`, `export-pdf/paper-size=a4`],
+          ...[`-O`, `export-pdf/orientation=portrait`],
+          ...[`-O`, `export-pdf/show-filename=false`],
+          ...[`-O`, `export-pdf/show-scale=true`],
+          ...[`-O`, `export-pdf/show-scale-message=true`],
+          ...[`-O`, `export-pdf/show-grid=false`],
+          ...[`-O`, `export-pdf/grid-size=10`],
+          ...[`-O`, `export-pdf/add-meta-data=true`],
+          ...[`-O`, `export-pdf/meta-data-title=__BASE_FILE_NAME__ - __PARAMETER_SET__`],
+          ...[`-O`, `export-pdf/meta-data-author=me`],
+          ...[
+            `-O`,
+            `export-pdf/meta-data-subject=__BASE_FILE_NAME__ - __PARAMETER_SET__ (made with OpenSCAD from "file __FILE_NAME__")`,
+          ],
+          ...[`-O`, `export-pdf/meta-data-keywords=OpenSCAD, 2D model`],
+          ...[`-O`, `export-pdf/fill=false`],
+          ...[`-O`, `export-pdf/fill-color=black`],
+          ...[`-O`, `export-pdf/stroke=true`],
+          ...[`-O`, `export-pdf/stroke-color=black`],
+          ...[`-O`, `export-pdf/stroke-width=0.35`],
+          ...[`--summary`, `all`],
+          ...[`--summary-file`, `./tests/unit/run/test2d.json.summaryXXXXXXXXXX.json`],
+          ...[`-p`, `./tests/unit/run/test2d.json`],
+          ...[`-P`, `all_20`],
+          ...[`--export-format`, `pdf`],
+          ...[`-o`, `tests/unit/run/out/test2d_all_20.pdf`],
+          `./tests/unit/run/test2d.scad`,
+        ]),
       ),
     );
   });
@@ -94,7 +175,28 @@ describe("OpenScad", () => {
     );
     expect(unrandomize(commands[0])).toBe(
       unrandomize(
-        `openscad --backend Manifold --enable import-function  --enable lazy-union  --enable predictible-output  --enable roof  --enable textmetrics  --enable object-function -O 'export-svg/fill=false' -O 'export-svg/fill-color=white' -O 'export-svg/stroke=true' -O 'export-svg/stroke-color=black' -O 'export-svg/stroke-width=0.35' --summary all --summary-file './tests/unit/run/test2d.json.summaryXXXXXXXXXX.json' -p './tests/unit/run/test2d.json' -P 'all_20' --export-format svg -o 'tests/unit/run/out/test2d_all_20.svg' './tests/unit/run/test2d.scad'`,
+        JSON.stringify([
+          `openscad`,
+          ...[`--backend`, `Manifold`],
+          ...[`--enable`, `import-function`],
+          ...[`--enable`, `lazy-union`],
+          ...[`--enable`, `predictible-output`],
+          ...[`--enable`, `roof`],
+          ...[`--enable`, `textmetrics`],
+          ...[`--enable`, `object-function`],
+          ...[`-O`, `export-svg/fill=false`],
+          ...[`-O`, `export-svg/fill-color=white`],
+          ...[`-O`, `export-svg/stroke=true`],
+          ...[`-O`, `export-svg/stroke-color=black`],
+          ...[`-O`, `export-svg/stroke-width=0.35`],
+          ...[`--summary`, `all`],
+          ...[`--summary-file`, `./tests/unit/run/test2d.json.summaryXXXXXXXXXX.json`],
+          ...[`-p`, `./tests/unit/run/test2d.json`],
+          ...[`-P`, `all_20`],
+          ...[`--export-format`, `svg`],
+          ...[`-o`, `tests/unit/run/out/test2d_all_20.svg`],
+          `./tests/unit/run/test2d.scad`,
+        ]),
       ),
     );
   });

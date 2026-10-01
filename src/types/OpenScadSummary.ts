@@ -7,7 +7,7 @@ export interface OpenScadOutput {
 }
 
 export interface ISummary {
-  getArg(): string;
+  buildArgs(): string[];
   getSummary(): ModelSummary;
 }
 
