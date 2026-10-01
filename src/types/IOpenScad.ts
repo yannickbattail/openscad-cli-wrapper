@@ -13,7 +13,7 @@ import {
 import { ParameterFileSet, ParameterKV, ParameterSetName } from "./ParameterSet.js";
 import { OpenScadOutputWithParameterDefinition, OpenScadOutputWithSummary } from "./OpenScadSummary.js";
 
-export type Executor = (cmd: string) => Promise<string>;
+export type Executor = (cmd: string[]) => Promise<{ code: number | null; stdout: string; stderr: string }>;
 
 export interface IOpenScad {
   getParameterDefinition(options: IOpenScadOptions): Promise<OpenScadOutputWithParameterDefinition>;
@@ -46,7 +46,7 @@ export interface IOpenScad {
     options: IOpenScadOptions,
   ): Promise<OpenScadOutputWithSummary>;
 
-  getFormatOption(format: Export3dFormat | Export2dFormat, options: IOpenScadOptions): string;
+  getFormatOption(format: Export3dFormat | Export2dFormat, options: IOpenScadOptions): string[];
 
   getFileFormatExtension(format: ExportFormat): string;
 
@@ -59,13 +59,13 @@ export interface IOpenScad {
     paramsNew: ParameterFileSet,
   ): void;
 
-  buildOpenscadOptions(option: IOpenScadOptions): string;
+  buildOpenscadOptions(option: IOpenScadOptions): string[];
 
-  buildExperimentalFeatures(experimentalFeatures: IExperimentalFeatures): string;
+  buildExperimentalFeatures(experimentalFeatures: IExperimentalFeatures): string[];
 
-  buildImageOptions(imgOptions: IImageOptions): string;
+  buildImageOptions(imgOptions: IImageOptions): string[];
 
-  buildAnimOption(animOptions: IAnimOptions): string;
+  buildAnimOption(animOptions: IAnimOptions): string[];
 
-  buildFormatOptions(option: IOption3mf | IOptionPdf | IOptionSvg, format: Export3dFormat | Export2dFormat): string;
+  buildFormatOptions(option: IOption3mf | IOptionPdf | IOptionSvg, format: Export3dFormat | Export2dFormat): string[];
 }

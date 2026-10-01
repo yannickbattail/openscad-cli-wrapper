@@ -28,6 +28,7 @@ export interface IExperimentalFeatures {
   vector_swizzle: boolean;
   discretization_by_error: boolean;
   ai_features: boolean;
+  unicode_identifiers: boolean;
   python_engine: boolean;
 }
 
@@ -56,6 +57,8 @@ export enum ColorScheme {
   Tomorrow = "Tomorrow",
   "Tomorrow Night" = "Tomorrow Night",
   ClearSky = "ClearSky",
+  NordDark = "Nord Dark",
+  NordLight = "Nord Light",
   Monotone = "Monotone",
 }
 
@@ -155,7 +158,6 @@ export enum Export3dFormat {
   binStl = "binstl",
   off = "off",
   wrl = "wrl",
-  amf = "amf",
   "3mf" = "3mf",
   pov = "pov",
 }

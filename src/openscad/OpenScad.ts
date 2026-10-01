@@ -18,7 +18,6 @@ import {
   IOptionPdf,
   IOptionSvg,
 } from "../types/IOpenScadOptions.js";
-import { esc } from "../util/execBash.js";
 import { Executor, IOpenScad } from "../types/IOpenScad.js";
 import { OpenScadOutputWithParameterDefinition, OpenScadOutputWithSummary } from "../types/OpenScadSummary.js";
 import { ParameterSetLoader } from "./ParameterSetLoader.js";
@@ -34,12 +33,17 @@ export class OpenScad implements IOpenScad {
 
   async getParameterDefinition(options: IOpenScadOptions): Promise<OpenScadOutputWithParameterDefinition> {
     const outFile = this.getFileByFormat(ExportTextFormat.param, "");
-    const out = await this.exec(
-      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} --export-format ${ExportTextFormat.param} -o '${outFile}' '${this.filePath}'`,
-    );
+
+    const out = await this.exec([
+      options.openScadExecutable,
+      ...this.buildOpenscadOptions(options),
+      ...["--export-format", ExportTextFormat.param],
+      ...["-o", outFile],
+      this.filePath,
+    ]);
     const paramDef: ParameterDefinition = JSON.parse(readFileSync(outFile, "utf8")) as ParameterDefinition;
     return {
-      output: out,
+      output: out.stdout + " " + out.stderr,
       modelFile: this.filePath,
       file: outFile,
       parameterDefinition: paramDef,
@@ -53,12 +57,19 @@ export class OpenScad implements IOpenScad {
     const paramSet = this.toParameterFile(params);
     const outFile = this.getFileByFormat(Export2dFormat.png, paramSet.parameterName);
     const summary = new Summary(paramSet.parameterFile);
-    const out = await this.exec(
-      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${this.buildImageOptions(options.imageOptions)} ${summary.getArg()} -p '${paramSet.parameterFile}' -P '${paramSet.parameterName}' -o '${outFile}' '${this.filePath}'`,
-    );
+    const out = await this.exec([
+      options.openScadExecutable,
+      ...this.buildOpenscadOptions(options),
+      ...this.buildImageOptions(options.imageOptions),
+      ...summary.buildArgs(),
+      ...["-p", paramSet.parameterFile],
+      ...["-P", paramSet.parameterName],
+      ...["-o", outFile],
+      this.filePath,
+    ]);
     this.cleanParameterFile(params, paramSet);
     return {
-      output: out,
+      output: out.stdout + " " + out.stderr,
       modelFile: this.filePath,
       summary: summary.getSummary(),
       file: outFile,
@@ -73,12 +84,19 @@ export class OpenScad implements IOpenScad {
     const outFile = this.getFileByFormat(Export2dFormat.png, paramSet.parameterName, true);
     const outFilePattern = outFile.replace(".png", "*.png");
     const summary = new Summary(paramSet.parameterFile);
-    const out = await this.exec(
-      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${this.buildAnimOption(options.animOptions)} ${summary.getArg()} -p '${paramSet.parameterFile}' -P '${paramSet.parameterName}' -o '${outFile}' '${this.filePath}'`,
-    );
+    const out = await this.exec([
+      options.openScadExecutable,
+      ...this.buildOpenscadOptions(options),
+      ...this.buildAnimOption(options.animOptions),
+      ...summary.buildArgs(),
+      ...["-p", paramSet.parameterFile],
+      ...["-P", paramSet.parameterName],
+      ...["-o", outFile],
+      this.filePath,
+    ]);
     this.cleanParameterFile(params, paramSet);
     return {
-      output: out,
+      output: out.stdout + " " + out.stderr,
       modelFile: this.filePath,
       summary: summary.getSummary(),
       file: outFilePattern,
@@ -109,20 +127,28 @@ export class OpenScad implements IOpenScad {
     const paramSet = this.toParameterFile(params);
     const outFile = this.getFileByFormat(format, paramSet.parameterName);
     const summary = new Summary(paramSet.parameterFile);
-    const formatOptions = this.getFormatOption(format, options);
-    const out = await this.exec(
-      `${options.openScadExecutable} ${this.buildOpenscadOptions(options)} ${formatOptions} ${summary.getArg()} -p '${paramSet.parameterFile}' -P '${paramSet.parameterName}' --export-format ${format} -o '${outFile}' '${this.filePath}'`,
-    );
+    const out = await this.exec([
+      options.openScadExecutable,
+      ...this.buildOpenscadOptions(options),
+      ...this.getFormatOption(format, options),
+      ...summary.buildArgs(),
+      ...["-p", paramSet.parameterFile],
+      ...["-P", paramSet.parameterName],
+      ...["--export-format", format],
+      ...["-o", outFile],
+      this.filePath,
+    ]);
+
     this.cleanParameterFile(params, paramSet);
     return {
-      output: out,
+      output: out.stdout + " " + out.stderr,
       modelFile: this.filePath,
       summary: summary.getSummary(),
       file: outFile,
     };
   }
 
-  getFormatOption(format: Export3dFormat | Export2dFormat, options: IOpenScadOptions): string {
+  getFormatOption(format: Export3dFormat | Export2dFormat, options: IOpenScadOptions): string[] {
     switch (format) {
       case Export3dFormat["3mf"]:
         return this.buildFormatOptions(options.option3mf, format);
@@ -131,7 +157,7 @@ export class OpenScad implements IOpenScad {
       case Export2dFormat.svg:
         return this.buildFormatOptions(options.optionSvg, format);
       default:
-        return "";
+        return [];
     }
   }
 
@@ -191,59 +217,69 @@ export class OpenScad implements IOpenScad {
     }
   }
 
-  buildOpenscadOptions(option: IOpenScadOptions): string {
-    let opt = `--backend ${option.backend}`;
-    opt += this.buildExperimentalFeatures(option.experimentalFeatures);
-    opt += option.quiet ? " --quiet" : "";
-    opt += option.hardwarnings ? " --hardwarnings" : "";
-    opt += option.check_parameters ? " --check-parameters" : "";
-    opt += option.check_parameter_ranges ? " --check-parameter-ranges" : "";
-    opt += option.debug ? ` --debug '${option.debug}'` : "";
-    opt += option.trust_python ? " --trust-python" : "";
-    opt += option.python_module ? ` --python-module '${esc(option.python_module)}'` : "";
+  buildOpenscadOptions(option: IOpenScadOptions): string[] {
+    const opt: string[] = [
+      ...[`--backend`, option.backend],
+      ...this.buildExperimentalFeatures(option.experimentalFeatures),
+    ];
+    if (option.quiet) opt.push("--quiet");
+    if (option.hardwarnings) opt.push("--hardwarnings");
+    if (option.check_parameters) opt.push("--check-parameters");
+    if (option.check_parameter_ranges) opt.push("--check-parameter-ranges");
+    if (option.debug) opt.push(`--debug`, option.debug ? "true" : "false");
+    if (option.trust_python) opt.push("--trust-python");
+    if (option.python_module) opt.push(`--python-module`, option.python_module);
     return opt;
   }
 
-  buildExperimentalFeatures(experimentalFeatures: IExperimentalFeatures) {
+  buildExperimentalFeatures(experimentalFeatures: IExperimentalFeatures): string[] {
     return Object.entries(experimentalFeatures)
       .filter(([, value]) => value)
-      .map(([key]) => ` --enable ${key.replaceAll("_", "-")}`)
-      .join(" ");
+      .map(([key]) => ["--enable", key.replaceAll("_", "-")])
+      .flat();
   }
 
-  buildImageOptions(imgOptions: IImageOptions): string {
-    let opt = " --export-format png";
-    opt += imgOptions.imgsize ? ` --imgsize ${imgOptions.imgsize.width},${imgOptions.imgsize.height}` : "";
+  buildImageOptions(imgOptions: IImageOptions): string[] {
+    const opt: string[] = ["--export-format", "png"];
+    if (imgOptions.imgsize) opt.push(`--imgsize`, `${imgOptions.imgsize.width},${imgOptions.imgsize.height}`);
     if (imgOptions.camera) {
       if ("translate" in imgOptions.camera) {
-        opt += ` --camera ${imgOptions.camera.translate?.x},${imgOptions.camera.translate?.y},${imgOptions.camera.translate?.z},${imgOptions.camera.rotate?.x},${imgOptions.camera.rotate?.y},${imgOptions.camera.rotate?.z},${imgOptions.camera.dist}`;
+        opt.push(
+          `--camera`,
+          `${imgOptions.camera.translate?.x},${imgOptions.camera.translate?.y},${imgOptions.camera.translate?.z},${imgOptions.camera.rotate?.x},${imgOptions.camera.rotate?.y},${imgOptions.camera.rotate?.z},${imgOptions.camera.dist}`,
+        );
       } else {
-        opt += ` --camera ${imgOptions.camera.eye?.x},${imgOptions.camera.eye?.y},${imgOptions.camera.eye?.z},${imgOptions.camera.center?.x},${imgOptions.camera.center?.y},${imgOptions.camera.center?.z}`;
+        opt.push(
+          `--camera`,
+          `${imgOptions.camera.eye?.x},${imgOptions.camera.eye?.y},${imgOptions.camera.eye?.z},${imgOptions.camera.center?.x},${imgOptions.camera.center?.y},${imgOptions.camera.center?.z}`,
+        );
       }
     }
-    opt += imgOptions.autocenter ? " --autocenter" : "";
-    opt += imgOptions.viewall ? " --viewall" : "";
-    opt += imgOptions.view ? ` --view ${imgOptions.view}` : "";
-    opt += imgOptions.projection ? ` --projection ${imgOptions.projection}` : "";
-    opt += imgOptions.colorscheme ? ` --colorscheme ${imgOptions.colorscheme}` : "";
-    opt += imgOptions.render ? " --render" : "";
-    opt += imgOptions.csglimit ? ` --csglimit ${imgOptions.csglimit}` : "";
-    opt += imgOptions.preview ? ` --preview ${imgOptions.preview}` : "";
+    if (imgOptions.autocenter) opt.push("--autocenter");
+    if (imgOptions.viewall) opt.push("--viewall");
+    if (imgOptions.view) opt.push(`--view`, imgOptions.view);
+    if (imgOptions.projection) opt.push(`--projection`, imgOptions.projection);
+    if (imgOptions.colorscheme) opt.push(`--colorscheme`, imgOptions.colorscheme);
+    if (imgOptions.render) opt.push("--render");
+    if (imgOptions.csglimit) opt.push(`--csglimit`, imgOptions.csglimit.toString());
+    if (imgOptions.preview) opt.push(`--preview`, imgOptions.preview);
     return opt;
   }
 
-  buildAnimOption(animOptions: IAnimOptions): string {
-    let opt = this.buildImageOptions(animOptions);
-    opt += animOptions.animate ? ` --animate ${animOptions.animate}` : "";
-    opt += animOptions.animate_sharding
-      ? ` --animate-sharding ${animOptions.animate_sharding.shard}/${animOptions.animate_sharding.num_shards}`
-      : "";
+  buildAnimOption(animOptions: IAnimOptions): string[] {
+    const opt: string[] = this.buildImageOptions(animOptions);
+    if (animOptions.animate) opt.push(`--animate`, animOptions.animate.toString());
+    if (animOptions.animate_sharding)
+      opt.push(
+        `--animate-sharding`,
+        `${animOptions.animate_sharding.shard}/${animOptions.animate_sharding.num_shards}`,
+      );
     return opt;
   }
 
-  buildFormatOptions(option: IOption3mf | IOptionPdf | IOptionSvg, format: Export3dFormat | Export2dFormat) {
+  buildFormatOptions(option: IOption3mf | IOptionPdf | IOptionSvg, format: Export3dFormat | Export2dFormat): string[] {
     return Object.entries(option)
-      .map(([key, value]) => `-O 'export-${format}/${key.replaceAll("_", "-")}=${esc(value)}'`)
-      .join(" ");
+      .map(([key, value]) => [`-O`, `export-${format}/${key.replaceAll("_", "-")}=${value}`])
+      .flat();
   }
 }
