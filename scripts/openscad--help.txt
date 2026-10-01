@@ -12,11 +12,10 @@ Allowed options:
                                     
   -o [ --o ] arg                    output specified file instead of running 
                                     the GUI. The file extension specifies the 
-                                    type: stl, off, wrl, amf, 3mf, csg, dxf, 
-                                    svg, pdf, png, echo, ast, term, nef3, 
-                                    nefdbg, param, pov. May be used multiple 
-                                    times for different exports. Use '-' for 
-                                    stdout.
+                                    type: stl, off, wrl, 3mf, csg, dxf, svg, 
+                                    pdf, png, echo, ast, term, nef3, nefdbg, 
+                                    param, pov. May be used multiple times for 
+                                    different exports. Use '-' for stdout.
                                     
   -O [ --O ] arg                    pass settings value to the file export 
                                     using the format section/key=value, e.g 
@@ -32,7 +31,8 @@ Allowed options:
                                     textmetrics | import-function | 
                                     object-function | predictible-output | 
                                     vector-swizzle | discretization-by-error | 
-                                    ai-features | python-engine
+                                    ai-features | unicode-identifiers | 
+                                    python-engine
                                     
   -h [ --help ]                     print this help message and exit
   --help-export                     print list of export parameters and values 
@@ -76,7 +76,8 @@ Allowed options:
                                     Sunset | Starnight | BeforeDawn | Nature | 
                                     Daylight Gem | Nocturnal Gem | DeepOcean | 
                                     Solarized | Tomorrow | Tomorrow Night | 
-                                    ClearSky | Monotone
+                                    ClearSky | Nord Dark | Nord Light | 
+                                    Monotone
                                     
   -d [ --d ] arg                    deps_file -generate a dependency file for 
                                     make
