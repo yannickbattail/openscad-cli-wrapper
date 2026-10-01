@@ -1,59 +1,21 @@
-import { ParameterFileSet } from "../types/ParameterSet.js";
-import { OpenScadOutputWithSummary } from "../types/OpenScadSummary.js";
 import { Executor } from "../types/IOpenScad.js";
+import { MosaicOptions } from "../types/IOpenScadOptions.js";
 
-export function GenerateMosaic(
-  parameterFileSet: ParameterFileSet,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  execCmd: Executor,
-): OpenScadOutputWithSummary {
-  // montage ${imagemagick_debug} -geometry "${image_mosaic_geometry}" -tile "${image_mosaic_tile}" "${jpg_dir}/"*.png "${jpg_dir}/mosaic_${scad_file_name}.jpg"
-  // let output = execOutput(
-  //   `img2webp -o "${output.file}" -d "${animDelay}" ${animImagesPattern}`,
-  // );
-  // output += execOutput(`rm ${animImagesPattern}`);
-  return {
-    output: "",
-    modelFile: parameterFileSet.parameterFile,
-    summary: {
-      cache: {
-        cgal_cache: {
-          bytes: 0,
-          entries: 0,
-          max_size: 0,
-        },
-        geometry_cache: {
-          bytes: 0,
-          entries: 0,
-          max_size: 0,
-        },
-      },
-      camera: {
-        distance: 0,
-        fov: 0,
-        rotation: [0, 0, 0],
-        translation: [0, 0, 0],
-      },
-      geometry: {
-        bounding_box: {
-          max: [0, 0, 0],
-          min: [0, 0, 0],
-          size: [0, 0, 0],
-        },
-        dimensions: 0,
-        facets: 0,
-        simple: false,
-        vertices: 0,
-      },
-      time: {
-        hours: 0,
-        milliseconds: 0,
-        minutes: 0,
-        seconds: 0,
-        time: "",
-        total: 0,
-      },
-    },
-    file: "",
-  };
+export async function GenerateMosaic(
+  files: string[],
+  mosaicFile: string,
+  mosaicOptions: MosaicOptions,
+  debug: boolean,
+  executor: Executor,
+): Promise<void> {
+  const geometry = `${mosaicOptions.geometry?.width}x${mosaicOptions.geometry?.height}+${mosaicOptions.geometry?.border}+${mosaicOptions.geometry?.border}`;
+  const tiles = `${mosaicOptions.tiles?.width}x${mosaicOptions.tiles?.height}`;
+  await executor([
+    "montage",
+    ...(debug ? ["-verbose"] : []),
+    ...["-geometry", geometry],
+    ...["-tile", tiles],
+    ...files,
+    mosaicFile,
+  ]);
 }

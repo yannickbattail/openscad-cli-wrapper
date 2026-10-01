@@ -16,6 +16,16 @@ All notable changes to this project will be documented in this file.
 
 ### Security
 
+## [1.5.2] - 2026-10-02
+
+### Added
+- GenerateMosaic()
+- GenerateWebpAnimation() and GenerateGifAnimation()
+
+### Removed
+- GenerateAnimation()
+
+
 ## [1.5.1] - 2026-10-01
 
 ### Changed
