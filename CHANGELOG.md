@@ -19,12 +19,18 @@ All notable changes to this project will be documented in this file.
 ## [1.5.2] - 2026-10-02
 
 ### Added
-- GenerateMosaic()
-- GenerateWebpAnimation() and GenerateGifAnimation()
+
+- `GenerateMosaic()`
+- `GenerateWebpAnimation()` and `GenerateGifAnimation()`
+
+### Changed
+
+- rename `createFctExecCommand` to `createExecutor`
+- `createExecutor` return a new type `CommandReturn`
 
 ### Removed
-- GenerateAnimation()
 
+- `GenerateAnimation()`
 
 ## [1.5.1] - 2026-10-01
 

@@ -1,4 +1,4 @@
-import { Executor } from "../types/IOpenScad.js";
+import { CommandReturn, Executor } from "../types/IOpenScad.js";
 import { MosaicOptions } from "../types/IOpenScadOptions.js";
 
 export async function GenerateMosaic(
@@ -7,10 +7,10 @@ export async function GenerateMosaic(
   mosaicOptions: MosaicOptions,
   debug: boolean,
   executor: Executor,
-): Promise<void> {
+): Promise<CommandReturn> {
   const geometry = `${mosaicOptions.geometry?.width}x${mosaicOptions.geometry?.height}+${mosaicOptions.geometry?.border}+${mosaicOptions.geometry?.border}`;
   const tiles = `${mosaicOptions.tiles?.width}x${mosaicOptions.tiles?.height}`;
-  await executor([
+  return await executor([
     "montage",
     ...(debug ? ["-verbose"] : []),
     ...["-geometry", geometry],

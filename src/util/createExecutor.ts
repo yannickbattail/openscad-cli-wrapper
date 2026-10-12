@@ -1,9 +1,9 @@
 import chalk from "chalk";
-import { Executor } from "../types/IOpenScad.js";
+import { CommandReturn, Executor } from "../types/IOpenScad.js";
 import { spawn } from "node:child_process";
 
-export function createFctExecCommand(quietMode: boolean, showCommand = false): Executor {
-  return async (command: string[]): Promise<{ code: number | null; stdout: string; stderr: string }> => {
+export function createExecutor(quietMode: boolean, showCommand = false): Executor {
+  return async (command: string[]): Promise<CommandReturn> => {
     return (
       (await execCommand(
         command,
@@ -41,7 +41,7 @@ export async function execCommand(
     quietMode?: boolean;
   } = {},
   showCommand = false,
-): Promise<{ code: number | null; stdout: string; stderr: string }> {
+): Promise<CommandReturn> {
   try {
     if (showCommand) {
       console.log(chalk.blue(`$ ${command.join(" ")}`));
@@ -64,11 +64,7 @@ export async function execCommand(
   }
 }
 
-function spawnAsync(
-  command: string[],
-  streamOutput: boolean,
-  cwd?: string,
-): Promise<{ code: number | null; stdout: string; stderr: string }> {
+function spawnAsync(command: string[], streamOutput: boolean, cwd?: string): Promise<CommandReturn> {
   return new Promise((resolve, reject) => {
     const p = spawn(command[0], command.slice(1), { cwd: cwd });
     let stdout = "";
