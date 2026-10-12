@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file.
 
 ### Security
 
-## [1.5.2] - 2026-10-02
+## [1.5.2] - 2026-10-13
 
 ### Added
 
@@ -31,6 +31,10 @@ All notable changes to this project will be documented in this file.
 ### Removed
 
 - `GenerateAnimation()`
+
+### Security
+
+- update npm packages
 
 ## [1.5.1] - 2026-10-01
 
