@@ -181,3 +181,16 @@ export enum ExportTextFormat {
 }
 
 export type ExportFormat = Export3dFormat | Export2dFormat | ExportTextFormat;
+
+export interface MosaicOptions {
+  geometry?: {
+    width: number;
+    height: number;
+    border: number;
+  };
+  tiles?: {
+    width: number;
+    height: number;
+  };
+  debug?: boolean;
+}

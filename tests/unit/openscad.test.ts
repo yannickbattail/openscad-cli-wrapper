@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { before } from "node:test";
 import { mkdirSync } from "fs";
-import { execCommand, Executor, Export2dFormat, Export3dFormat, OpenScad } from "../../src/index.js";
+import { CommandReturn, execCommand, Executor, Export2dFormat, Export3dFormat, OpenScad } from "../../src/index.js";
 import { getDefaultOpenscadOptions } from "./util/configuration.js";
 
 const commands: string[] = [];
 
 function createFctExecCommand(quietMode: boolean, showCommand = false): Executor {
-  return async (cmd: string[]): Promise<{ code: number | null; stdout: string; stderr: string }> => {
+  return async (cmd: string[]): Promise<CommandReturn> => {
     const fct =
       (await execCommand(
         cmd,

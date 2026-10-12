@@ -13,7 +13,7 @@ export * from "./types/ParameterDefinition.js";
 export * from "./types/ParameterSet.js";
 export * from "./types/RecursivePartial.js";
 
-export * from "./util/execBash.js";
+export * from "./util/createExecutor.js";
 export * from "./util/AnimationGeneration.js";
 export * from "./util/MosaicGeneration.js";
 export * from "./util/validation.js";

@@ -13,7 +13,8 @@ import {
 import { ParameterFileSet, ParameterKV, ParameterSetName } from "./ParameterSet.js";
 import { OpenScadOutputWithParameterDefinition, OpenScadOutputWithSummary } from "./OpenScadSummary.js";
 
-export type Executor = (cmd: string[]) => Promise<{ code: number | null; stdout: string; stderr: string }>;
+export type CommandReturn = { code: number | null; stdout: string; stderr: string };
+export type Executor = (cmd: string[]) => Promise<CommandReturn>;
 
 export interface IOpenScad {
   getParameterDefinition(options: IOpenScadOptions): Promise<OpenScadOutputWithParameterDefinition>;
